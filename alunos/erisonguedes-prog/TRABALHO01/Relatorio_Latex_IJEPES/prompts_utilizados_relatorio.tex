@@ -1,0 +1,91 @@
+\documentclass[12pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[brazil]{babel}
+\usepackage{mathptmx}
+\usepackage{geometry}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\geometry{margin=2.5cm}
+\urlstyle{same}
+
+\title{Prompts Utilizados no Desenvolvimento dos Benchmarks}
+\author{Erison Guedes}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section*{Lista organizada dos prompts}
+
+Esta lista consolida os prompts utilizados para orientar o desenvolvimento dos scripts, execucoes, consolidacoes e relatorios das duas questoes do trabalho.
+
+\renewcommand{\arraystretch}{1.25}
+\begin{longtable}{p{2.2cm}p{3.8cm}p{8.6cm}}
+\caption{Prompts utilizados no trabalho}\\
+\toprule
+Questao & Etapa & Prompt utilizado \\
+\midrule
+\endfirsthead
+\toprule
+Questao & Etapa & Prompt utilizado \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+
+Questao 1 & Conversao AMPL para Julia &
+Converter os 47 problemas em formato AMPL da pagina PLATO/ASU para modelos Julia/JuMP, tratando parametros calculados, dados embutidos, comandos de fixacao de variaveis e estruturas sintaticas especificas dos modelos. \\
+
+Questao 1 & Validacao dos modelos convertidos &
+Validar os modelos convertidos em blocos pequenos, identificando problemas que ainda falham no parser, erros de sintaxe, incompatibilidades de indice e restricoes mal traduzidas. \\
+
+Questao 1 & Execucao por solver &
+Criar um codigo para executar os 47 problemas por solver, na ordem Ipopt, MadNLP, NLopt, Optim e Uno, salvando resultados parciais e permitindo continuidade sem repetir execucoes ja concluidas. \\
+
+Questao 1 & Tratamento de erros &
+Trabalhar os problemas que apresentaram erro ou limite de tempo, criando uma rotina separada para rerodar apenas esses casos com tempo maior de execucao. \\
+
+Questao 1 & Consolidacao &
+Consolidar os resultados finais da Questao 1 em tabelas por solver, contendo total de problemas, resolvidos, limite de tempo, erros, outros status, taxa de resolucao e tempo total. \\
+
+Questao 2 & Selecao dos problemas COCONUT &
+Desenvolva um script em Julia capaz de acessar a pagina Library 1 da biblioteca COCO/CONOPT Benchmark, identificar os problemas validos para benchmark global, filtrar os problemas com valor Fbest disponivel e realizar o download automatico dos respectivos arquivos GAMS (.gms). \\
+
+Questao 2 & Download dos arquivos de referencia &
+Desenvolva um script em Julia para baixar automaticamente os arquivos .res associados aos problemas selecionados, armazenando os resultados de referencia em uma estrutura organizada para posterior comparacao dos resultados obtidos pelos solvers. \\
+
+Questao 2 & Conversao GAMS para Julia &
+Desenvolva uma rotina automatizada para converter os modelos GAMS selecionados para a linguagem Julia utilizando o pacote JuMPConverter, identificando e registrando eventuais falhas de conversao. \\
+
+Questao 2 & Filtragem dos problemas utilizaveis &
+Desenvolva um procedimento para identificar quais modelos convertidos podem ser executados corretamente em Julia, descartando problemas com erros sintaticos, funcoes incompativeis ou inconsistencias estruturais. \\
+
+Questao 2 & Execucao dos benchmarks &
+Desenvolva uma estrutura de benchmark para executar automaticamente os modelos convertidos utilizando os solvers Ipopt, MadNLP, Optim, NLopt e Uno, registrando tempo de execucao, valor objetivo, status da solucao, numero de iteracoes e demais metricas disponiveis. \\
+
+Questao 2 & Comparacao com referencia &
+Desenvolva uma rotina para comparar os resultados obtidos pelos solvers com os valores Fbest fornecidos pela biblioteca COCO, calculando gap absoluto e gap relativo para cada execucao. \\
+
+Questao 2 & Consolidacao dos resultados &
+Desenvolva uma rotina para consolidar os resultados de todas as execucoes em arquivos CSV, contendo problema, solver, status, valor objetivo, Fbest, gap absoluto, gap relativo, tempo de execucao, numero de variaveis e numero de restricoes. \\
+
+Questao 2 & Dashboard &
+Desenvolva um dashboard em Excel contendo indicadores de desempenho dos solvers, taxa de convergencia, tempo medio de execucao, gap medio, ranking de robustez e ranking de velocidade. \\
+
+Questao 2 & Relatorio final &
+Elabore um relatorio consolidado contendo exclusivamente os resultados experimentais dos benchmarks realizados, incluindo tabelas comparativas, graficos de desempenho, analise de robustez, analise de tempo computacional e comparacao dos gaps em relacao aos valores de referencia Fbest. \\
+
+Relatorio & Relatorio integrado &
+Gerar um relatorio integrado das duas tarefas, contendo metricas consolidadas, dashboard, comparacao entre solvers e resultados finais em formato de revista cientifica usando template LaTeX. \\
+
+Relatorio & Ajustes finais &
+Formatar o relatorio em fonte unica, remover textos desnecessarios do template, organizar as tabelas com linhas superiores e inferiores e gerar um PDF final pronto para entrega. \\
+
+\end{longtable}
+
+\end{document}
