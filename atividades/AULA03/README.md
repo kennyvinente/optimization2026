@@ -1,1 +1,0 @@
-https://transp-or.epfl.ch/books/optimization/html/index.html
