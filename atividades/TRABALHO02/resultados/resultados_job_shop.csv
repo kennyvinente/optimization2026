@@ -1,0 +1,5 @@
+problema,instancia,n_jobs,n_machines,otimo_conhecido,makespan,gap,n_binarias,status
+Job Shop Scheduling,ft06,6,6,55,55,0.0,90,OPTIMAL
+Job Shop Scheduling,la01,10,5,666,666,0.2191,225,TIME_LIMIT
+Job Shop Scheduling,la02,10,5,655,708,0.3103,225,TIME_LIMIT
+Job Shop Scheduling,ft10,10,10,930,1043,0.2835,450,TIME_LIMIT

@@ -1,0 +1,8 @@
+problema,instancia,n_jobs,n_machines,makespan,gap,status
+Flow Shop Scheduling,problem_10m_20j,20,10,330,0.5436,TIME_LIMIT
+Flow Shop Scheduling,problem_3m_10j,10,3,126,0.0,OPTIMAL
+Flow Shop Scheduling,problem_3m_20j,20,3,218,0.6863,TIME_LIMIT
+Flow Shop Scheduling,problem_5m_10j,10,5,129,0.0,OPTIMAL
+Flow Shop Scheduling,problem_5m_20j,20,5,275,0.6304,TIME_LIMIT
+Flow Shop Scheduling,problem_5m_30j,30,5,358,0.7486,TIME_LIMIT
+Flow Shop Scheduling,problem_8m_10j,10,8,187,0.0,OPTIMAL
