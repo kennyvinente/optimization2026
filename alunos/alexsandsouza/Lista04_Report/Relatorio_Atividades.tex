@@ -1,0 +1,143 @@
+\documentclass[preprint,12pt]{elsarticle}
+
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{listings}
+\usepackage{xcolor}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2,
+    language=Python % Usamos highlight de python para simular Julia no latex
+}
+\lstset{style=mystyle}
+
+\journal{IJEPES}
+
+\begin{document}
+
+\begin{frontmatter}
+
+\title{Relat\'orio de Atividades - M\'etodos de Otimiza\c{c}\~ao (Aula 03)}
+
+\author[inst1]{Alexs}
+
+\affiliation[inst1]{organization={Disciplina de Otimiza\c{c}\~ao - Prof. Kennyvinente},
+            addressline={Universidade}, 
+            city={S\~ao Paulo},
+            postcode={00000}, 
+            state={SP},
+            country={Brasil}}
+
+\begin{abstract}
+Este relat\'orio consolida os c\'odigos, algoritmos e an\'alises matem\'aticas desenvolvidos nas seis atividades da Aula 03 da disciplina de Otimiza\c{c}\~ao N\~ao Linear. S\~ao abordados desde o cl\'assico M\'etodo de Newton, algoritmos Quase-Newton, Gradientes Conjugados, at\'e as robustas Buscas Lineares Inexatas e o BFGS. Os m\'etodos foram testados diante de diversos problemas de otimiza\c{c}\~ao (como a restritiva Fun\c{c}\~ao de Rosenbrock). A linguagem adotada para a modelagem algor\'itmica \'e Julia.
+\end{abstract}
+
+\begin{keyword}
+Otimiza\c{c}\~ao N\~ao Linear \sep M\'etodo de Newton \sep BFGS \sep Julia \sep Busca Linear
+\end{keyword}
+
+\end{frontmatter}
+
+\section{Atividade S03-01: M\'etodos de Newton (1D e n-D)}
+\label{sec:s0301}
+A primeira atividade visa resolver sistemas n\~ao lineares utilizando o M\'etodo de Newton. 
+O m\'etodo original de Newton exige a determina\c{c}\~ao anal\'itica da derivada (Jacobiano ou Hessiana). No entanto, em implementa\c{c}\~oes computacionais pesadas, frequentemente substitu\'imos o c\'alculo da matriz anal\'itica por uma aproxima\c{c}\~ao via Diferen\c{c}as Finitas em fun\c{c}\~oes suficientemente diferenci\'aveis ($C^p$).
+
+\begin{lstlisting}[language=Python, caption={Exemplo Num\'erico de Newton N-Dimensional em Julia}]
+function finite_difference_jacobian(F, x; h=1e-8)
+    n = length(x)
+    J = zeros(n, n)
+    F_x = F(x)
+    for j in 1:n
+        x_forward = copy(x)
+        x_forward[j] += h
+        J[:, j] = (F(x_forward) - F_x) / h
+    end
+    return J
+end
+
+function fd_newton_nd(F, x0; tol=1e-8, maxiter=100, h=1e-8)
+    x = float.(copy(x0))
+    for k in 1:maxiter
+        Fx = F(x)
+        if norm(Fx) < tol
+            return x
+        end
+        J = finite_difference_jacobian(F, x, h=h)
+        delta_x = J \ (-Fx)
+        x += delta_x
+    end
+    return x
+end
+\end{lstlisting}
+
+\section{Atividade S03-02: M\'etodos Quase-Newton e Secante}
+\label{sec:s0302}
+Os m\'etodos Quase-Newton, como a Secante (1D) ou Broyden (n-D), oferecem atualiza\c{c}\~oes iterativas das matrizes de derivadas baseando-se em avalia\c{c}\~oes sucessivas das fun\c{c}\~oes. A grande vantagem computacional demonstrada reside na elimina\c{c}\~ao da obrigatoriedade de reavaliar o passo de diferen\c{c}as finitas para cada um dos eixos coordenados a cada iterac\c{c}\~ao.
+
+\section{Atividade S03-03: Problemas Quadr\'aticos e Gradientes Conjugados}
+\label{sec:s0303}
+Nesta pr\'atica, aprofundamo-nos na minimiza\c{c}\~ao de formas quadr\'aticas $F(x) = \frac{1}{2} x^T Q x + b^T x$. Para garantir a converg\^encia para um m\'inimo global exclusivo e finito, exige-se rigorosamente que a matriz Hessiana $Q$ seja Sim\'etrica Positiva Definida (S.P.D.). 
+A resolu\c{c}\~ao direta com o operador de divis\~ao invertida (\texttt{x = Q \textbackslash -b}) se provou imediata em sistemas menores. Tratando sistemas de grande porte na Otimiza\c{c}\~ao, exploramos o algoritmo de Gradientes Conjugados (GC), gerando dire\c{c}\~oes $\beta$-conjugadas que driblam a alta exig\^encia de mem\'oria no armazenamento da Hessiana.
+
+\section{Atividade S03-04: Newton Local e Fun\c{c}\~ao de Rosenbrock}
+\label{sec:s0304}
+O Newton Local foi implementado fornecendo-se os Gradientes e a Hessiana anal\'itica do vale curvo de Rosenbrock, com $n$ dimens\~oes.
+O n\'ucleo dessa atividade foi observar o colapso algor\'itmico diante de Hessianas que n\~ao s\~ao positivas definidas. Neste cen\'ario desfavor\'avel, as dire\c{c}\~oes calculadas ($H p_k = -g_k$) frequentemente remetem a dire\c{c}\~oes de subida. Constru\'imos uma trava de seguran\c{c}a (\texttt{!isposdef(H)}) que lan\c{c}a uma Exce\c{c}\~ao formal quando uma regi\~ao de sela ou n\~ao convexa \'e encontrada.
+
+\section{Atividade S03-05: Busca Linear Inexata e M\'axima Descida}
+\label{sec:s0305}
+A ado\c{c}\~ao da dire\c{c}\~ao de Maior Descida (Steepest Descent, $d = -g$) n\~ao anula a obriga\c{c}\~ao de um c\'alculo apurado do tamanho do passo $\alpha$. Implementamos o m\'etodo Bracketing, a Interpola\c{c}\~ao Quadr\'atica Exata, e, para escalabilidade, a **Regra de Armijo**.
+
+\begin{lstlisting}[language=Python, caption={Algoritmo de Busca Linear de Armijo na Liguagem Julia}]
+function armijo_line_search(f_func, g_func, x_k, d_k; alpha_init=1.0, c1=1e-4, tau=0.5)
+    alpha = alpha_init
+    fx = f_func(x_k)
+    gx = g_func(x_k)
+    limite_arm = c1 * dot(gx, d_k)
+    
+    # Reduz iterativamente o tamanho de passo pela metade (tau)
+    while f_func(x_k + alpha * d_k) > fx + alpha * limite_arm
+        alpha *= tau
+        if alpha < 1e-10
+            break
+        end
+    end
+    return alpha
+end
+\end{lstlisting}
+Ao testarmos o Steepest Descent acoplado ao Armijo contra a fun\c{c}\~ao de Rosenbrock, constatamos sua hist\'orica lentid\~ao computacional (milhares de itera\c{c}\~oes em zigue-zague).
+
+\section{Atividade S03-06: M\'etodo Quase-Newton BFGS}
+\label{sec:s0306}
+Na \'ultima bateria algor\'itmica, unificamos a atualiza\c{c}\~ao iterativa de matrizes BFGS com a Busca Linear. Ele resolve de forma sutil as depend\^encias matem\'aticas pesadas de se inverter ou gerar a Hessiana em cada passo, sendo considerado atualmente como estado da arte na otimiza\c{c}\~ao n\~ao linear irrestrita. Aplicado ao problema de Rosenbrock, a converg\^encia foi acelerada dramaticamente comparada ao Steepest Descent da atividade 05.
+
+\appendix
+
+\section{Coment\'arios Finais}
+A progress\~ao da su\'ite t\'ecnica S03-01 a S03-06 nos fornece as bases algor\'itmicas s\'olidas (dire\c{c}\~ao e passo) em Julia que resolvem grandes classes de problemas te\'oricos de otimiza\c{c}\~ao.
+
+ \bibliographystyle{elsarticle-num} 
+ \bibliography{cas-refs}
+
+\end{document}

@@ -1,0 +1,207 @@
+%% 
+%% Copyright 2007-2020 Elsevier Ltd
+%% 
+%% This file is part of the 'Elsarticle Bundle'.
+%% ---------------------------------------------
+%% 
+%% It may be distributed under the conditions of the LaTeX Project Public
+%% License, either version 1.2 of this license or (at your option) any
+%% later version.  The latest version of this license is in
+%%    http://www.latex-project.org/lppl.txt
+%% and version 1.2 or later is part of all distributions of LaTeX
+%% version 1999/12/01 or later.
+%% 
+%% The list of all files belonging to the 'Elsarticle Bundle' is
+%% given in the file `manifest.txt'.
+%% 
+
+%% Template article for Elsevier's document class `elsarticle'
+%% with numbered style bibliographic references
+%% SP 2008/03/01
+%%
+%% 
+%%
+%% $Id: elsarticle-template-num.tex 190 2020-11-23 11:12:32Z rishi $
+%%
+%%
+\documentclass[preprint,12pt]{elsarticle}
+
+%% Use the option review to obtain double line spacing
+%% \documentclass[authoryear,preprint,review,12pt]{elsarticle}
+
+%% Use the options 1p,twocolumn; 3p; 3p,twocolumn; 5p; or 5p,twocolumn
+%% for a journal layout:
+%% \documentclass[final,1p,times]{elsarticle}
+%% \documentclass[final,1p,times,twocolumn]{elsarticle}
+%% \documentclass[final,3p,times]{elsarticle}
+%% \documentclass[final,3p,times,twocolumn]{elsarticle}
+%% \documentclass[final,5p,times]{elsarticle}
+%% \documentclass[final,5p,times,twocolumn]{elsarticle}
+
+%% For including figures, graphicx.sty has been loaded in
+%% elsarticle.cls. If you prefer to use the old commands
+%% please give \usepackage{epsfig}
+
+%% The amssymb package provides various useful mathematical symbols
+\usepackage{amssymb}
+\usepackage{amsmath}
+%% The amsthm package provides extended theorem environments
+%% \usepackage{amsthm}
+
+%% The lineno packages adds line numbers. Start line numbering with
+%% \begin{linenumbers}, end it with \end{linenumbers}. Or switch it on
+%% for the whole article with \linenumbers.
+%% \usepackage{lineno}
+
+\journal{IJEPES}
+
+\begin{document}
+
+\begin{frontmatter}
+
+%% Title, authors and addresses
+
+%% use the tnoteref command within \title for footnotes;
+%% use the tnotetext command for theassociated footnote;
+%% use the fnref command within \author or \address for footnotes;
+%% use the fntext command for theassociated footnote;
+%% use the corref command within \author for corresponding author footnotes;
+%% use the cortext command for theassociated footnote;
+%% use the ead command for the email address,
+%% and the form \ead[url] for the home page:
+%% \title{Title\tnoteref{label1}}
+%% \tnotetext[label1]{}
+%% \author{Name\corref{cor1}\fnref{label2}}
+%% \ead{email address}
+%% \ead[url]{home page}
+%% \fntext[label2]{}
+%% \cortext[cor1]{}
+%% \affiliation{organization={},
+%%             addressline={},
+%%             city={},
+%%             postcode={},
+%%             state={},
+%%             country={}}
+%% \fntext[label3]{}
+
+\title{Resolu\c{c}\~ao da Lista 4 - Otimiza\c{c}\~ao N\~ao Linear}
+
+%% use optional labels to link authors explicitly to addresses:
+%% \author[label1,label2]{}
+%% \affiliation[label1]{organization={},
+%%             addressline={},
+%%             city={},
+%%             postcode={},
+%%             state={},
+%%             country={}}
+%%
+%% \affiliation[label2]{organization={},
+%%             addressline={},
+%%             city={},
+%%             postcode={},
+%%             state={},
+%%             country={}}
+
+\author[inst1]{Alexs}
+
+\affiliation[inst1]{organization={Disciplina de Otimiza\c{c}\~ao - Prof. Kennyvinente},%Department and Organization
+            addressline={Universidade}, 
+            city={S\~ao Paulo},
+            postcode={00000}, 
+            state={SP},
+            country={Brasil}}
+
+\begin{abstract}
+%% Text of abstract
+Este documento apresenta a resolu\c{c}\~ao dos problemas propostos na Lista 4, utilizando a teoria de otimiza\c{c}\~ao n\~ao linear. Aborda-se, em especial, a influ\^encia da aritm\'etica de ponto flutuante na avalia\c{c}\~ao de equa\c{c}\~oes da classe $C^p$.
+\end{abstract}
+
+%%Graphical abstract
+%\begin{graphicalabstract}
+%\includegraphics{grabs}
+%\end{graphicalabstract}
+
+%%Research highlights
+%\begin{highlights}
+%\item Research highlight 1
+%\item Research highlight 2
+%\end{highlights}
+
+\begin{keyword}
+%% keywords here, in the form: keyword \sep keyword
+Otimiza\c{c}\~ao \sep Ponto Flutuante \sep Diferen\c{c}as Finitas \sep Classe $C^p$
+%% PACS codes here, in the form: \PACS code \sep code
+%\PACS 0000 \sep 1111
+%% MSC codes here, in the form: \MSC code \sep code
+%% or \MSC[2008] code \sep code (2000 is the default)
+%\MSC 0000 \sep 1111
+\end{keyword}
+
+\end{frontmatter}
+
+%% \linenumbers
+
+%% main text
+\section{Quest\~ao 1: Teoria de Ponto Flutuante nas Equa\c{c}\~oes $C^p$}
+\label{sec:q1}
+
+Para considerar a teoria de ponto flutuante nas equa\c{c}\~oes $C^p$ (fun\c{c}\~oes que s\~ao $p$ vezes continuamente diferenci\'aveis), precisamos entender o compromisso matem\'atico fundamental (trade-off) que ocorre quando calculamos aproxima\c{c}\~oes num\'ericas em computadores.
+
+A representa\c{c}\~ao de n\'umeros no computador obedece ao padr\~ao IEEE 754. Devido a isso, existe uma precis\~ao da m\'aquina finita, representada por $\epsilon_{mach}$ (machine epsilon), que vale aproximadamente $10^{-16}$ para precis\~ao dupla (Float64).
+
+Quando avaliamos derivadas de fun\c{c}\~oes da classe $C^p$ usando Diferen\c{c}as Finitas (um procedimento padr\~ao quando derivadas anal\'iticas n\~ao est\~ao dispon\'iveis), cometemos dois tipos principais de erros:
+
+\subsection{1. Erro de Truncamento Matem\'atico}
+Este erro \'e intr\'inseco \`a equa\c{c}\~ao $C^p$. Como a fun\c{c}\~ao \'e $p$ vezes diferenci\'avel, utilizamos a S\'erie de Taylor at\'e a ordem $p$ para aproxim\'a-la e descartamos os termos de ordem superior (o "Resto"). Por exemplo, para uma Diferen\c{c}a Finita Avan\c{c}ada de uma fun\c{c}\~ao $C^2$, o erro de truncamento decresce linearmente com o tamanho do passo $h$:
+\begin{equation}
+E_{trunc} \approx \frac{M}{2} h
+\end{equation}
+onde $M$ \'e um limitante para a segunda derivada na vizinhan\c{c}a de interesse.
+
+\subsection{2. Erro de Arredondamento (Ponto Flutuante)}
+Sempre que fazemos uma subtra\c{c}\~ao de dois n\'umeros muito pr\'oximos em ponto flutuante, como $f(x+h) - f(x)$, sofremos o chamado "cancelamento catastr\'ofico". A magnitude do erro gerado pela limita\c{c}\~ao do computador ($\epsilon_{mach}$) afeta o resultado num\'erico de forma inversamente proporcional a $h$:
+\begin{equation}
+E_{arr} \approx \frac{2 \epsilon_{mach} |f(x)|}{h}
+\end{equation}
+
+\subsection{Considerando a Teoria na Pr\'atica}
+Considerar a teoria de ponto flutuante significa, portanto, encontrar o tamanho de passo \'otimo $h^*$ que minimize o erro total gerado ($E_{total} = E_{trunc} + E_{arr}$).
+
+Derivando $E_{total}$ em rela\c{c}\~ao a $h$ e igualando a zero, descobrimos o ponto de balan\c{c}o \'otimo. Ele depende de a qual classe $C^p$ a fun\c{c}\~ao pertence:
+
+\begin{itemize}
+    \item Para equa\c{c}\~oes avaliadas por diferen\c{c}a avan\c{c}ada, o passo \'otimo \'e proporcional \`a raiz quadrada do erro da m\'aquina: $h^* \approx \sqrt{\epsilon_{mach}} \approx 10^{-8}$.
+    \item Para equa\c{c}\~oes avaliadas por diferen\c{c}a central (exige no m\'inimo fun\c{c}\~oes da classe $C^3$), o passo \'otimo \'e proporcional \`a raiz c\'ubica do erro da m\'aquina: $h^* \approx \sqrt[3]{\epsilon_{mach}} \approx 10^{-5}$.
+\end{itemize}
+
+Dessa forma, considerar essa teoria na formula\c{c}\~ao de problemas de otimiza\c{c}\~ao nos diz que não podemos escolher um $h$ arbitrariamente pequeno achando que a exatidão aumentará infinitamente; a matem\'atica exata deve ser ponderada com a propaga\c{c}\~ao do erro de arredondamento inerente \`a arquitetura computacional.
+
+%% The Appendices part is started with the command \appendix;
+%% appendix sections are then done as normal sections
+\appendix
+
+\section{Coment\'arios Finais}
+\label{sec:sample:appendix}
+A precis\~ao $C^p$ permite an\'alise de Hessiana (caso de classe 2) ou ordens superiores, fundamentais para a converg\^encia dos m\'etodos de Newton e Quase-Newton ensinados.
+
+%% If you have bibdatabase file and want bibtex to generate the
+%% bibitems, please use
+%%
+ \bibliographystyle{elsarticle-num} 
+ \bibliography{cas-refs}
+
+%% else use the following coding to input the bibitems directly in the
+%% TeX file.
+
+% \begin{thebibliography}{00}
+
+% %% \bibitem{label}
+% %% Text of bibliographic item
+
+% \bibitem{}
+
+% \end{thebibliography}
+\end{document}
+\endinput
+%%
+%% End of file `elsarticle-template-num.tex'.

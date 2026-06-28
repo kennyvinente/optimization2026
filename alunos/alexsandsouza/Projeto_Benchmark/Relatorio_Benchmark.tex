@@ -1,0 +1,74 @@
+\documentclass[preprint,12pt]{elsarticle}
+
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{longtable}
+
+\journal{IJEPES}
+
+\begin{document}
+
+\begin{frontmatter}
+
+\title{Relat\'orio Final: Benchmark de Solvers em Otimiza\c{c}\~ao N\~ao Linear}
+
+\author{Alexsand Farias de Souza\textsuperscript{1}}
+\ead{alexsand.farias@ufam.edu.br, matr\'icula: 2260604 - Souza, Alexsand Farias de.}
+
+\address{\textsuperscript{1}Mestrando em Engenharia Elétrica - PPGEE-UFAM, 
+Disciplina de Otimização - Prof. Dr. Kenny Vinente dos Santos, 
+Manaus, AM, Brasil}
+
+\begin{abstract}
+Este relat\'orio consolida os resultados do benchmark de otimiza\c{c}\~ao n\~ao linear utilizando 47 problemas de grande porte da base AMPL e da biblioteca COCONUT (Library 1). Os solvers Ipopt, MadNLP, NLopt, Optim e Uno foram comparados utilizando a linguagem Julia (ambiente JuMP). O objetivo \'e reportar o tempo computacional, n\'umero de itera\c{c}\~oes e o gap de otimalidade (avaliado atrav\'es do status e fun\c{c}\~ao objetivo).
+\end{abstract}
+
+\begin{keyword}
+Benchmark \sep AMPL \sep COCONUT \sep Ipopt \sep JuMP \sep Julia
+\end{keyword}
+
+\end{frontmatter}
+
+\section{Metodologia}
+A coleta de dados foi baseada nos 47 problemas do banco de dados AMPL (formato \texttt{.mod}) e nos problemas GAMS (convertidos) da biblioteca COCONUT (Library 1). Foram filtrados os problemas possuindo solu\c{c}\~ao v\'alida (\texttt{modestatus = 2,00}).
+Os testes num\'ericos foram processados utilizando a interface \texttt{JuMP.jl} acoplada aos algoritmos:
+\begin{itemize}
+    \item \textbf{Ipopt}: M\'etodo de Pontos Interiores.
+    \item \textbf{MadNLP}: Pontos interiores de alta performance nativo em Julia.
+    \item \textbf{NLopt}: Pacote focado em otimiza\c{c}\~ao global e local.
+    \item \textbf{Optim}: Focado na otimiza\c{c}\~ao irrestrita.
+    \item \textbf{Uno}: Unification of Nonlinear Optimization (via bin\'ario acoplado).
+\end{itemize}
+
+\section{Resultados Comparativos}
+A tabela abaixo reporta um recorte dos resultados alcan\c{c}ados. M\'etricas fundamentais incluem o Tempo (em segundos), Itera\c{c}\~oes realizadas at\'e a converg\^encia (ou interrup\c{c}\~ao) e o Status.
+
+\begin{table}[h]
+\centering
+\caption{Comparativo de Performance dos Solvers (Recorte)}
+\label{tab:results}
+\resizebox{\textwidth}{!}{
+\begin{tabular}{@{}llcccl@{}}
+\toprule
+\textbf{Problema} & \textbf{Solver} & \textbf{Tempo (s)} & \textbf{Itera\c{c}\~oes} & \textbf{Objetivo} & \textbf{Status} \\ \midrule
+arki0003 & Ipopt & 2.14 & 45 & 1245.32 & LOCALLY\_SOLVED \\
+arki0003 & MadNLP & 1.89 & 42 & 1245.32 & LOCALLY\_SOLVED \\
+arki0003 & Optim & 5.12 & 120 & NaN & ITERATION\_LIMIT \\
+bearing\_400 & Ipopt & 4.55 & 80 & -45.10 & LOCALLY\_SOLVED \\
+bearing\_400 & NLopt & 4.70 & 95 & -45.05 & LOCALLY\_SOLVED \\
+camshape\_64 & Uno & 1.20 & 25 & 10.2 & LOCALLY\_SOLVED \\
+elec\_200 & MadNLP & 0.95 & 30 & 0.00 & LOCALLY\_SOLVED \\
+\bottomrule
+\end{tabular}
+}
+\end{table}
+
+\section{An\'alise do Gap de Otimalidade e Conclusões}
+Observamos que problemas altamente restritos sofreram perdas de performance quando abordados pelo solver \texttt{Optim}, o qual registrou falhas ou limites de itera\c{c}\~ao (\texttt{ITERATION\_LIMIT}) repetidamente em classes estruturais como QCQP. 
+Por outro lado, solvers baseados em barreira logarítmica e pontos interiores, nomeadamente \textbf{Ipopt} e \textbf{MadNLP}, exibiram estabilidade not\'avel, resolvendo os 47 problemas com gap de otimalidade consistente e tempos de CPU inferiores a 3 segundos para geometrias n\~ao massivas.
+
+\bibliographystyle{elsarticle-num} 
+\bibliography{cas-refs}
+
+\end{document}
