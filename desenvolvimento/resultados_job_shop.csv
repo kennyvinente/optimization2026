@@ -1,0 +1,3 @@
+problema,instancia,tarefas,maquinas,operacoes,status_terminacao,status_primal,valor_objetivo_ou_makespan,melhor_limite,gap_relativo,tempo_solucao,quantidade_variaveis,quantidade_restricoes,limite_tempo,mensagem_erro
+Job Shop Scheduling,ft06,6,6,36,OPTIMAL,FEASIBLE_POINT,54.999999999999496,54.999999999999496,0.0,0.509079322,127,380,false,
+Job Shop Scheduling,la01,10,5,50,TIME_LIMIT,FEASIBLE_POINT,666.0000000000002,511.4392823663179,0.2320731496001235,15.009415672,276,827,true,

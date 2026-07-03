@@ -1,0 +1,7 @@
+problema,instancia,tarefas,maquinas,operacoes,status_terminacao,status_primal,valor_objetivo_ou_makespan,melhor_limite,gap_relativo,tempo_solucao,quantidade_variaveis,quantidade_restricoes,limite_tempo,mensagem_erro
+Machine Scheduling,inst_book,7,1,7,OPTIMAL,FEASIBLE_POINT,15.999999999999988,15.999999999999988,0.0,0.279280902,42,126,false,
+Machine Scheduling,inst_n05_s01,5,1,5,OPTIMAL,FEASIBLE_POINT,7.0,6.999997000000008,4.285714274893897e-7,0.015147738,25,75,false,
+Job Shop Scheduling,ft06,6,6,36,OPTIMAL,FEASIBLE_POINT,54.999999999999496,54.999999999999496,0.0,0.509079322,127,380,false,
+Job Shop Scheduling,la01,10,5,50,TIME_LIMIT,FEASIBLE_POINT,666.0000000000002,511.4392823663179,0.2320731496001235,15.009415672,276,827,true,
+Flow Shop Scheduling,problem_3m_10j,10,3,30,OPTIMAL,FEASIBLE_POINT,126.0,126.0,0.0,0.016689981,131,231,false,
+Flow Shop Scheduling,problem_3m_20j,20,3,60,OPTIMAL,FEASIBLE_POINT,218.0,218.0,0.0,0.051607178,461,661,false,

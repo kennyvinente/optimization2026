@@ -1,0 +1,3 @@
+problema,instancia,tarefas,maquinas,operacoes,status_terminacao,status_primal,valor_objetivo_ou_makespan,melhor_limite,gap_relativo,tempo_solucao,quantidade_variaveis,quantidade_restricoes,limite_tempo,mensagem_erro
+Flow Shop Scheduling,problem_3m_10j,10,3,30,OPTIMAL,FEASIBLE_POINT,126.0,126.0,0.0,0.016689981,131,231,false,
+Flow Shop Scheduling,problem_3m_20j,20,3,60,OPTIMAL,FEASIBLE_POINT,218.0,218.0,0.0,0.051607178,461,661,false,
