@@ -1,0 +1,79 @@
+using JuMP
+using Ipopt
+
+# =========================
+# 1. CAMINHO DA PASTA
+# =========================
+models_dir = raw"D:\Codigos\otimização\optimization2026\trabalho 1\models"
+
+files = readdir(models_dir)
+
+println("Arquivos encontrados: ", length(files))
+
+# =========================
+# 2. LOOP NOS MODELOS
+# =========================
+for file in files
+
+    file_path = joinpath(models_dir, file)
+
+    println("\n==============================")
+    println("Rodando modelo: ", file)
+    println("==============================")
+
+    # lê o texto (GAMS bruto)
+    gams_text = read(file_path, String)
+
+    # =========================
+    # 3. MODELO (fixo por enquanto)
+    # =========================
+    model = Model(Ipopt.Optimizer)
+
+    @variable(model, x[1:11] >= 0.001)
+    @constraint(model, x[11] >= 0.01)
+
+    c = [
+        6.0557680362407096,
+        17.130768036240699,
+        34.020768036240703,
+        5.8807680362407098,
+        24.687768036240701,
+        14.9527680362407,
+        24.066768036240699,
+        10.6747680362407,
+        26.6287680362407,
+        22.144768036240698
+    ]
+
+    # =========================
+    # 4. RESTRIÇÕES
+    # =========================
+    @constraint(model, sum(x[i] for i in 1:10) == x[11])
+
+    @constraint(model, x[3] + x[7] + x[8] + 2x[9] + x[10] == 1)
+    @constraint(model, x[4] + 2x[5] + x[6] + x[7] == 1)
+    @constraint(model, x[1] + 2x[2] + 2x[3] + x[6] + x[10] == 2)
+
+    # =========================
+    # 5. OBJETIVO
+    # =========================
+    @NLobjective(model, Min,
+        sum(
+            x[i] * (log(x[i] / x[11]) - c[i])
+            for i in 1:10
+        )
+    )
+
+    # =========================
+    # 6. RESOLVER
+    # =========================
+    optimize!(model)
+
+    # =========================
+    # 7. OUTPUT
+    # =========================
+    println("Status: ", termination_status(model))
+    println("Objetivo: ", objective_value(model))
+    println("x: ", value.(x))
+
+end
