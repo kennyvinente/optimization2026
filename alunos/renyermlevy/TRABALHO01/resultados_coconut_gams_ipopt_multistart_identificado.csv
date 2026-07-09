@@ -1,0 +1,4 @@
+parte,fonte,formato,problema,solver,status,objetivo_obtido,objetivo_referencia,gap,mensagem
+Parte 2,COCONUT/GAMS Benchmark,GAMS convertido para JuMP,ex4_1_1,Ipopt,LOCALLY_SOLVED,-7.487312364902367,-7.4873123649,3.1613419784609816e-13,Resultado identificado no HTML/PDF enviado
+Parte 2,COCONUT/GAMS Benchmark,GAMS convertido para JuMP,ex4_1_2,Ipopt,LOCALLY_SOLVED,-663.5000966105,-663.5000966105,1.71344e-16,Resultado identificado no HTML/PDF enviado
+Parte 2,COCONUT/GAMS Benchmark,GAMS convertido para JuMP,ex4_1_3,Ipopt,LOCALLY_SOLVED,-443.6717047411,-443.6717047411,5.49637e-14,Resultado identificado no HTML/PDF enviado
