@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trabalho 02 · Escalonamento e Otimização</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#131A2E; --ink-soft:#2A3350; --paper:#F5F6F8; --card:#FFFFFF;
+    --line:#E2E5EC; --muted:#6B7386; --text:#1A2238;
+    --p1:#E0A028; --p2:#1E9AA8; --p3:#7E6BD4;
+    --gap:#D64545; --ok:#2E9E6B;
+    --sidebar-w:288px; --radius:14px;
+    --shadow:0 1px 2px rgba(19,26,46,.04), 0 8px 24px rgba(19,26,46,.06);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;background:var(--paper);color:var(--text);
+    font-family:"IBM Plex Sans",system-ui,sans-serif;line-height:1.55;-webkit-font-smoothing:antialiased;}
+  .mono{font-family:"IBM Plex Mono",monospace;}
+  .shell{display:flex;min-height:100vh;}
+
+  /* Sidebar */
+  .sidebar{width:var(--sidebar-w);background:var(--ink);color:#E8EAF1;
+    position:fixed;top:0;left:0;bottom:0;padding:28px 20px;
+    display:flex;flex-direction:column;overflow-y:auto;z-index:20;}
+  .brand-eyebrow{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.18em;
+    text-transform:uppercase;color:#8A93B0;margin-bottom:10px;}
+  .brand-title{font-family:"Space Grotesk",sans-serif;font-weight:600;font-size:21px;
+    line-height:1.2;color:#fff;margin:0 0 4px;}
+  .brand-sub{font-size:12.5px;color:#9AA2BE;margin-bottom:26px;}
+  .nav-label{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.16em;
+    text-transform:uppercase;color:#6E7695;margin:8px 6px 10px;}
+  .nav-item{display:flex;align-items:flex-start;gap:12px;width:100%;text-align:left;
+    background:transparent;border:none;cursor:pointer;color:#C7CCDE;padding:12px 12px;
+    margin-bottom:4px;border-radius:10px;font-family:inherit;font-size:14px;
+    transition:background .18s,color .18s;position:relative;}
+  .nav-item:hover{background:rgba(255,255,255,.05);color:#fff;}
+  .nav-item.active{background:rgba(255,255,255,.09);color:#fff;}
+  .nav-item:focus-visible{outline:2px solid #fff;outline-offset:2px;}
+  .nav-track{width:4px;align-self:stretch;border-radius:3px;flex:0 0 auto;
+    background:var(--dot,#6E7695);opacity:.5;transition:opacity .18s;}
+  .nav-item.active .nav-track,.nav-item:hover .nav-track{opacity:1;}
+  .nav-txt strong{display:block;font-weight:600;font-size:14.5px;letter-spacing:-.01em;}
+  .nav-txt span{display:block;font-size:11.5px;color:#8A93B0;margin-top:2px;}
+  .nav-item.active .nav-txt span{color:#AEB6D2;}
+  .sidebar-foot{margin-top:auto;padding-top:22px;border-top:1px solid rgba(255,255,255,.08);
+    font-size:11px;color:#7C84A2;line-height:1.6;}
+  .sidebar-foot .mono{color:#9AA2BE;}
+
+  /* Main */
+  .main{margin-left:var(--sidebar-w);flex:1;padding:44px 52px 90px;max-width:1140px;}
+  .panel{display:none;animation:fade .4s ease;}
+  .panel.active{display:block;}
+  @keyframes fade{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
+
+  /* Panel header */
+  .phead{margin-bottom:8px;}
+  .peyebrow{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.16em;
+    text-transform:uppercase;display:inline-flex;align-items:center;gap:9px;color:var(--muted);margin-bottom:14px;}
+  .peyebrow .pin{width:9px;height:9px;border-radius:50%;background:var(--accent,var(--ink));}
+  .ptitle{font-family:"Space Grotesk",sans-serif;font-weight:600;font-size:34px;line-height:1.08;
+    letter-spacing:-.02em;margin:0 0 12px;color:var(--ink);}
+  .plede{font-size:16px;color:var(--ink-soft);max-width:74ch;margin:0;}
+  .plede code,.prose code,.plede .m{font-family:"IBM Plex Mono",monospace;font-size:13.5px;
+    background:#EEF0F5;padding:1px 6px;border-radius:5px;color:var(--ink);}
+
+  .gantt-motif{margin:24px 0 4px;background:linear-gradient(180deg,#FCFCFD,#F7F8FB);
+    border:1px solid var(--line);border-radius:var(--radius);padding:18px 22px;}
+  .gantt-motif svg{display:block;width:100%;height:auto;}
+  .gantt-cap{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--muted);margin-top:10px;}
+
+  /* Big numbered section (the 3 blocks) */
+  .block{margin-top:44px;padding-top:30px;border-top:2px solid var(--line);}
+  .block-head{display:flex;align-items:center;gap:14px;margin-bottom:6px;}
+  .block-badge{width:34px;height:34px;border-radius:10px;background:var(--accent);color:#fff;
+    font-family:"Space Grotesk",sans-serif;font-weight:600;font-size:17px;
+    display:flex;align-items:center;justify-content:center;flex:0 0 auto;}
+  .block-title{font-family:"Space Grotesk",sans-serif;font-size:24px;font-weight:600;
+    letter-spacing:-.02em;color:var(--ink);margin:0;}
+  .block-sub{font-size:14px;color:var(--muted);margin:2px 0 0 48px;}
+
+  /* Sub-section */
+  .sub{margin-top:28px;}
+  .sub-head{display:flex;align-items:baseline;gap:10px;margin-bottom:14px;}
+  .sub-tag{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.06em;
+    color:var(--accent);font-weight:600;text-transform:uppercase;
+    border:1px solid var(--accent);padding:2px 8px;border-radius:6px;}
+  .sub-title{font-family:"Space Grotesk",sans-serif;font-size:17px;font-weight:600;color:var(--ink);margin:0;}
+
+  .prose{font-size:15px;color:var(--ink-soft);}
+  .prose p{margin:0 0 12px;}
+  .prose strong{color:var(--ink);font-weight:600;}
+
+  .chips{display:flex;flex-wrap:wrap;gap:9px;margin:14px 0;}
+  .chip{display:inline-flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--line);
+    padding:8px 13px;border-radius:999px;font-size:13px;font-weight:500;box-shadow:var(--shadow);}
+  .chip .cd{width:8px;height:8px;border-radius:50%;background:var(--accent);}
+  .chip.exato{border-color:var(--accent);}
+
+  /* metric cards */
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin:6px 0;}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    padding:16px 18px 14px;box-shadow:var(--shadow);}
+  .card .k{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--muted);margin-bottom:9px;}
+  .card .v{font-family:"Space Grotesk",sans-serif;font-size:25px;font-weight:600;line-height:1;color:var(--ink);}
+  .card .note{font-size:12px;color:var(--muted);margin-top:8px;}
+
+  /* tables */
+  .tcap{font-family:"IBM Plex Mono",monospace;font-size:11.5px;color:var(--muted);
+    margin:0 0 8px;letter-spacing:.02em;}
+  .tcap b{color:var(--ink);}
+  .tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--radius);
+    box-shadow:var(--shadow);background:var(--card);margin-bottom:6px;}
+  table{border-collapse:collapse;width:100%;font-size:13px;}
+  thead th{background:#F2F4F8;color:var(--ink-soft);font-family:"IBM Plex Mono",monospace;
+    font-size:10.5px;letter-spacing:.04em;text-transform:uppercase;font-weight:600;text-align:right;
+    padding:11px 13px;border-bottom:1px solid var(--line);white-space:nowrap;position:sticky;top:0;}
+  thead th:first-child{text-align:left;}
+  tbody td{padding:9px 13px;text-align:right;border-bottom:1px solid #EDEFF4;font-family:"IBM Plex Mono",monospace;}
+  tbody td:first-child{text-align:left;font-family:"IBM Plex Sans",sans-serif;font-weight:500;}
+  tbody tr:last-child td{border-bottom:none;}
+  tbody tr:hover td{background:#FAFBFC;}
+  tr.grp td{background:#EEF1F6;font-family:"IBM Plex Mono",monospace;font-weight:600;
+    color:var(--ink-soft);font-size:11px;letter-spacing:.05em;text-align:left;text-transform:uppercase;}
+  tr.hl td{background:#FBF4E8;}
+  tr.hlv td{background:#F3F0FB;}
+  .badge{display:inline-block;padding:2px 8px;border-radius:6px;font-size:10.5px;font-weight:600;
+    font-family:"IBM Plex Mono",monospace;}
+  .b-ok{background:#E4F4EC;color:#1F7A50;}
+  .b-lim{background:#FBE9E9;color:#B23434;}
+  .gapcell{color:var(--gap);font-weight:600;}
+  .best{color:var(--ok);font-weight:600;}
+  .win{background:#E4F4EC;color:#1F7A50;font-weight:600;border-radius:4px;padding:1px 5px;}
+
+  /* findings */
+  .finds{display:flex;flex-direction:column;gap:12px;counter-reset:f;}
+  .find{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    padding:15px 18px 15px 52px;position:relative;box-shadow:var(--shadow);}
+  .find::before{counter-increment:f;content:counter(f);position:absolute;left:15px;top:15px;
+    width:24px;height:24px;border-radius:7px;background:var(--accent);color:#fff;
+    font-family:"IBM Plex Mono",monospace;font-size:12px;font-weight:600;
+    display:flex;align-items:center;justify-content:center;}
+  .find h4{margin:0 0 4px;font-size:14.5px;font-weight:600;color:var(--ink);font-family:"Space Grotesk",sans-serif;}
+  .find p{margin:0;font-size:13.5px;color:var(--ink-soft);}
+  .find.key{border-color:var(--accent);background:linear-gradient(180deg,#fff,#FDFBF4);}
+  .find.key::before{background:var(--gap);}
+
+  .callout{border-left:3px solid var(--accent);background:#FBFCFE;padding:13px 18px;
+    border-radius:0 10px 10px 0;font-size:14px;color:var(--ink-soft);margin:14px 0;}
+  .callout b{color:var(--ink);}
+
+  /* understanding box */
+  .understand{background:var(--ink);color:#E8EAF1;border-radius:var(--radius);padding:24px 26px;margin-top:6px;}
+  .understand p{margin:0 0 12px;font-size:14.5px;color:#C7CCDE;}
+  .understand p:last-child{margin-bottom:0;}
+  .understand strong{color:#fff;font-weight:600;}
+  .understand .u-tag{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.12em;
+    text-transform:uppercase;color:#8A93B0;margin-bottom:12px;}
+
+  /* gap visual */
+  .gapviz{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    padding:22px 24px;box-shadow:var(--shadow);margin-top:6px;}
+  .gapviz .track{position:relative;height:44px;background:#EEF0F5;border-radius:9px;overflow:hidden;margin:26px 0 10px;}
+  .gapviz .fill-bound{position:absolute;left:0;top:0;bottom:0;background:var(--ok);opacity:.22;}
+  .gapviz .fill-sol{position:absolute;left:0;top:0;bottom:0;background:var(--gap);opacity:.14;}
+  .gapviz .mark{position:absolute;top:-6px;bottom:-6px;width:2px;background:var(--ink);}
+  .gapviz .mark.bound{background:var(--ok);} .gapviz .mark.sol{background:var(--gap);}
+  .gapviz .lbl{position:absolute;font-family:"IBM Plex Mono",monospace;font-size:11px;top:-24px;
+    white-space:nowrap;transform:translateX(-50%);}
+  .gapviz .zone{position:absolute;top:50%;transform:translateY(-50%);font-family:"IBM Plex Mono",monospace;
+    font-size:11px;color:var(--gap);font-weight:600;}
+  .gapviz .legend{display:flex;gap:18px;flex-wrap:wrap;font-size:12.5px;color:var(--muted);margin-top:16px;}
+  .gapviz .legend b{color:var(--ink);}
+  .gapviz .legend .sw{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:6px;vertical-align:-1px;}
+
+  /* synthesis table */
+  .syn td:first-child{color:var(--muted);font-weight:600;white-space:nowrap;}
+  .syn th{text-align:left !important;}
+  .syn td{text-align:left;font-family:"IBM Plex Sans",sans-serif;}
+  .dot-p1{color:var(--p1);} .dot-p2{color:var(--p2);} .dot-p3{color:var(--p3);}
+  .throughline{background:var(--ink);color:#E8EAF1;border-radius:var(--radius);padding:26px 28px;margin-top:6px;}
+  .throughline h4{font-family:"Space Grotesk",sans-serif;color:#fff;margin:0 0 14px;font-size:17px;}
+  .throughline ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:12px;}
+  .throughline li{padding-left:26px;position:relative;font-size:14px;color:#C7CCDE;}
+  .throughline li::before{content:"→";position:absolute;left:0;color:#7E8AB8;font-family:"IBM Plex Mono",monospace;}
+  .throughline li b{color:#fff;}
+
+  .menu-btn{display:none;}
+  @media(max-width:880px){
+    .sidebar{transform:translateX(-100%);transition:transform .25s;box-shadow:0 0 40px rgba(0,0,0,.3);}
+    .sidebar.open{transform:none;}
+    .main{margin-left:0;padding:70px 20px 60px;}
+    .ptitle{font-size:26px;}
+    .menu-btn{display:flex;align-items:center;gap:8px;position:fixed;top:14px;left:14px;z-index:30;
+      background:var(--ink);color:#fff;border:none;cursor:pointer;padding:10px 14px;border-radius:10px;
+      font-family:"IBM Plex Mono",monospace;font-size:12px;}
+    .scrim{display:none;position:fixed;inset:0;background:rgba(19,26,46,.4);z-index:15;}
+    .scrim.show{display:block;}
+    .block-sub{margin-left:0;}
+  }
+  @media(prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important;}html{scroll-behavior:auto;}}
+</style>
+</head>
+<body>
+
+<button class="menu-btn" id="menuBtn" aria-label="Abrir menu">☰ Partes</button>
+<div class="scrim" id="scrim"></div>
+
+<div class="shell">
+  <aside class="sidebar" id="sidebar">
+    <div class="brand-eyebrow">Trabalho 02 · Mestrado</div>
+    <h1 class="brand-title">Escalonamento &amp; Otimização</h1>
+    <p class="brand-sub">Três problemas · Julia + JuMP + HiGHS · MILO e heurísticas</p>
+
+    <div class="nav-label">Partes do trabalho</div>
+    <nav id="nav">
+      <button class="nav-item active" data-panel="p1" style="--dot:var(--p1)">
+        <span class="nav-track"></span>
+        <span class="nav-txt"><strong>Parte 1 — Máquina única</strong><span>31 instâncias · atraso total</span></span>
+      </button>
+      <button class="nav-item" data-panel="p2" style="--dot:var(--p2)">
+        <span class="nav-track"></span>
+        <span class="nav-txt"><strong>Parte 2 — Job Shop</strong><span>10 instâncias · 3 experimentos</span></span>
+      </button>
+      <button class="nav-item" data-panel="p3" style="--dot:var(--p3)">
+        <span class="nav-track"></span>
+        <span class="nav-txt"><strong>Parte 3 — Flow Shop</strong><span>7 instâncias · 28 execuções</span></span>
+      </button>
+    </nav>
+    <div class="sidebar-foot">
+      Solver <span class="mono">HiGHS</span> · configuração livre<br>
+      Entrega via Pull Request · <span class="mono">09/07/2026</span>
+    </div>
+  </aside>
+
+  <main class="main">
+
+  <!-- ================= PARTE 1 ================= -->
+  <section class="panel active" id="p1" style="--accent:var(--p1)">
+    <header class="phead">
+      <div class="peyebrow"><span class="pin"></span>Parte 1 · Machine Scheduling</div>
+      <h1 class="ptitle">Uma máquina, muitas tarefas, prazos apertados</h1>
+      <p class="plede">Problema <span class="m">1 | r_j | ΣT_j</span>: uma única máquina processa tarefas que chegam em tempos diferentes (release), cada uma com duração e prazo. Objetivo: minimizar o <strong>atraso total</strong>. Comparamos três heurísticas (FIFO, EDD, SPT) contra o modelo exato MILO com disjunção <strong>big-M</strong>, sobre 31 instâncias (n = 5 a 24, 3 seeds por tamanho), limite de 60 s por instância.</p>
+      <div class="gantt-motif">
+        <svg viewBox="0 0 640 90" role="img" aria-label="Gantt de máquina única">
+          <line x1="70" y1="70" x2="620" y2="70" stroke="#C7CCDE" stroke-width="1"/>
+          <text x="8" y="42" font-family="IBM Plex Mono" font-size="12" fill="#6B7386">M1</text>
+          <rect x="70" y="26" width="120" height="30" rx="5" fill="#E0A028" opacity=".85"/>
+          <rect x="196" y="26" width="80" height="30" rx="5" fill="#E0A028" opacity=".6"/>
+          <rect x="282" y="26" width="150" height="30" rx="5" fill="#E0A028" opacity=".85"/>
+          <rect x="438" y="26" width="95" height="30" rx="5" fill="#E0A028" opacity=".6"/>
+          <text x="130" y="46" font-family="IBM Plex Mono" font-size="11" fill="#4a3a10" text-anchor="middle">T1</text>
+          <text x="236" y="46" font-family="IBM Plex Mono" font-size="11" fill="#4a3a10" text-anchor="middle">T2</text>
+          <text x="357" y="46" font-family="IBM Plex Mono" font-size="11" fill="#4a3a10" text-anchor="middle">T3</text>
+          <text x="485" y="46" font-family="IBM Plex Mono" font-size="11" fill="#4a3a10" text-anchor="middle">T4</text>
+          <text x="70" y="86" font-family="IBM Plex Mono" font-size="10" fill="#6B7386">tempo →</text>
+        </svg>
+        <div class="gantt-cap">Uma só esteira: a decisão é a ordem de processamento.</div>
+      </div>
+    </header>
+
+    <!-- BLOCO 1 -->
+    <div class="block">
+      <div class="block-head"><div class="block-badge">1</div><h2 class="block-title">O que foi feito</h2></div>
+      <p class="block-sub">A construção, o método e todos os resultados das 31 instâncias.</p>
+
+      <div class="sub">
+        <div class="sub-head"><span class="sub-tag">montagem</span><h3 class="sub-title">Como o método foi construído</h3></div>
+        <div class="prose">
+          <p>Tudo foi montado de baixo pra cima: um <strong>simulador</strong> de cronograma, depois as três <strong>heurísticas</strong> como linha de base, e por fim o <strong>modelo exato</strong> (MILO), amarrando a disjunção "duas tarefas não se sobrepõem" via big-M. Rodamos heurísticas + exato em cada instância, medindo atraso total, tempo e status do solver.</p>
+        </div>
+        <div class="chips">
+          <span class="chip"><span class="cd"></span>FIFO — ordem de chegada</span>
+          <span class="chip"><span class="cd"></span>EDD — menor prazo primeiro</span>
+          <span class="chip"><span class="cd"></span>SPT — menor duração primeiro</span>
+          <span class="chip exato"><span class="cd"></span>MILO exato · big-M · HiGHS</span>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sub-head"><span class="sub-tag">exemplo</span><h3 class="sub-title">Um caso concreto para calibrar a leitura</h3></div>
+        <p class="tcap">Instância <b>inst_book</b> (n = 7) — atraso total por método. Menor é melhor.</p>
+        <div class="tbl-wrap" style="max-width:420px;">
+          <table>
+            <thead><tr><th>Método</th><th>Atraso</th><th>vs ótimo</th></tr></thead>
+            <tbody>
+              <tr><td>SPT</td><td>51</td><td>+219%</td></tr>
+              <tr><td>FIFO</td><td>31</td><td>+94%</td></tr>
+              <tr><td>EDD</td><td>27</td><td>+68%</td></tr>
+              <tr class="hl"><td>Ótimo (HiGHS)</td><td class="best">16</td><td>—</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout">Mesmo a melhor heurística (EDD) ficou <b>68% acima</b> do ótimo aqui. É o retrato de que as regras rápidas deixam qualidade na mesa — e de que rodar o exato compensa nas instâncias pequenas.</div>
+      </div>
+
+      <div class="sub">
+        <div class="sub-head"><span class="sub-tag">tabela completa</span><h3 class="sub-title">Todas as instâncias rodadas</h3></div>
+        <p class="tcap">Atraso total de cada método · coluna <b>melhor</b> = ótimo nas linhas OPTIMAL / melhor solução encontrada nas TIME_LIMIT · limite de 60 s.</p>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>Instância</th><th>n</th><th>FIFO</th><th>EDD</th><th>SPT</th><th>Melhor</th><th>Tempo</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td>inst_n05_s01</td><td>5</td><td>9</td><td class="best">7</td><td>54</td><td>7</td><td>0,02s</td><td><span class="badge b-ok">optimal</span></td></tr>
+              <tr><td>inst_n05_s02</td><td>5</td><td>19</td><td class="best">15</td><td>15</td><td>15</td><td>0,15s</td><td><span class="badge b-ok">optimal</span></td></tr>
+              <tr><td>inst_n05_s03</td><td>5</td><td>4</td><td class="best">3</td><td>20</td><td>3</td><td>0,05s</td><td><span class="badge b-ok">optimal</span></td></tr>
+              <tr><td>inst_book</td><td>7</td><td>31</td><td class="best">27</td><td>51</td><td>16</td><td>0,31s</td><td><span class="badge b-ok">optimal</span></td></tr>
+              <tr><td>inst_n07_s01</td><td>7</td><td class="best">42</td><td>58</td><td>99</td><td>38</td><td>0,39s</td><td><span class="badge b-ok">optimal</span></td></tr>
+              <tr><td>inst_n07_s02</td><td>7</td><td>40</td><td class="best">31</td><td>77</td><td>30</td><td>0,76s</td><td><span class="badge b-ok">optimal</span></td></tr>
+              <tr><td>inst_n07_s03</td><td>7</td><td>36</td><td class="best">30</td><td>56</td><td>26</td><td>0,26s</td><td><span class="badge b-ok">optimal</span></td></tr>
+              <tr><td>inst_n09_s01</td><td>9</td><td>38</td><td class="best">29</td><td>62</td><td>26</td><td>0,65s</td><td><span class="badge b-ok">optimal</span></td></tr>
+              <tr><td>inst_n09_s02</td><td>9</td><td>83</td><td>94</td><td class="best">64</td><td>56</td><td>1,73s</td><td><span class="badge b-ok">optimal</span></td></tr>
+              <tr><td>inst_n09_s03</td><td>9</td><td>47</td><td class="best">39</td><td>43</td><td>32</td><td>5,65s</td><td><span class="badge b-ok">optimal</span></td></tr>
+              <tr><td>inst_n11_s01</td><td>11</td><td>46</td><td class="best">43</td><td>134</td><td>16</td><td>1,25s</td><td><span class="badge b-ok">optimal</span></td></tr>
+              <tr><td>inst_n11_s02</td><td>11</td><td class="best">98</td><td>113</td><td>229</td><td>62</td><td>11,67s</td><td><span class="badge b-ok">optimal</span></td></tr>
+              <tr class="hl"><td>inst_n11_s03</td><td>11</td><td class="best">178</td><td>223</td><td>180</td><td>116</td><td>60,01s</td><td><span class="badge b-lim">time_limit</span></td></tr>
+              <tr class="grp"><td colspan="8">n = 13 e n = 15 — 6 seeds na zona de transição (não capturadas no print; é exatamente onde a parede se forma)</td></tr>
+              <tr><td>inst_n17_s01</td><td>17</td><td>379</td><td class="best">275</td><td>696</td><td>172</td><td>60,04s</td><td><span class="badge b-lim">time_limit</span></td></tr>
+              <tr><td>inst_n17_s02</td><td>17</td><td class="best">232</td><td>273</td><td>599</td><td>162</td><td>60,03s</td><td><span class="badge b-lim">time_limit</span></td></tr>
+              <tr><td>inst_n17_s03</td><td>17</td><td class="best">189</td><td>225</td><td>658</td><td>120</td><td>60,03s</td><td><span class="badge b-lim">time_limit</span></td></tr>
+              <tr><td>inst_n19_s01</td><td>19</td><td class="best">396</td><td>434</td><td>1013</td><td>317</td><td>60,02s</td><td><span class="badge b-lim">time_limit</span></td></tr>
+              <tr><td>inst_n19_s02</td><td>19</td><td class="best">207</td><td>290</td><td>491</td><td>128</td><td>60,02s</td><td><span class="badge b-lim">time_limit</span></td></tr>
+              <tr><td>inst_n19_s03</td><td>19</td><td>344</td><td class="best">313</td><td>656</td><td>252</td><td>60,02s</td><td><span class="badge b-lim">time_limit</span></td></tr>
+              <tr><td>inst_n21_s01</td><td>21</td><td>301</td><td class="best">235</td><td>746</td><td>200</td><td>60,04s</td><td><span class="badge b-lim">time_limit</span></td></tr>
+              <tr><td>inst_n21_s02</td><td>21</td><td class="best">336</td><td>367</td><td>743</td><td>231</td><td>60,05s</td><td><span class="badge b-lim">time_limit</span></td></tr>
+              <tr><td>inst_n21_s03</td><td>21</td><td class="best">297</td><td>435</td><td>801</td><td>220</td><td>60,02s</td><td><span class="badge b-lim">time_limit</span></td></tr>
+              <tr><td>inst_n24_s01</td><td>24</td><td>255</td><td class="best">241</td><td>776</td><td>145</td><td>60,06s</td><td><span class="badge b-lim">time_limit</span></td></tr>
+              <tr><td>inst_n24_s02</td><td>24</td><td>380</td><td class="best">377</td><td>903</td><td>287</td><td>60,05s</td><td><span class="badge b-lim">time_limit</span></td></tr>
+              <tr><td>inst_n24_s03</td><td>24</td><td>494</td><td class="best">415</td><td>1053</td><td>294</td><td>60,04s</td><td><span class="badge b-lim">time_limit</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="tcap" style="margin-top:8px;">Célula verde = melhor heurística da linha. Note como o líder troca entre FIFO e EDD, e o SPT quase nunca vence.</p>
+      </div>
+    </div>
+
+    <!-- BLOCO 2 -->
+    <div class="block">
+      <div class="block-head"><div class="block-badge">2</div><h2 class="block-title">O que foi percebido</h2></div>
+      <p class="block-sub">Os padrões que saltam da tabela durante os testes.</p>
+      <div class="finds" style="margin-top:20px;">
+        <div class="find"><h4>A parede de complexidade é real</h4><p>Até n ≈ 11 o solver resolve e prova o ótimo em segundos. A partir de n = 17 tudo bate no limite de 60 s (<span class="mono">TIME_LIMIT</span>). A primeira instância a estourar foi a <span class="mono">inst_n11_s03</span> — o começo da parede.</p></div>
+        <div class="find key"><h4>"Ótimo" numa linha TIME_LIMIT não é ótimo</h4><p>Quando o status é <span class="mono">OPTIMAL</span>, o número é o ótimo provado. Quando é <span class="mono">TIME_LIMIT</span>, é só a <b>melhor solução encontrada</b> até o tempo acabar — pode ser o ótimo ou não. A diferença entre os dois é o <b>gap</b>: a prova que falta.</p></div>
+        <div class="find"><h4>Não existe heurística campeã</h4><p>EDD e FIFO se revezam na liderança: no <span class="mono">inst_n07_s01</span> o FIFO (42) bateu o EDD (58); no <span class="mono">inst_n09_s02</span> quem venceu foi o SPT (64), com o EDD sendo o pior (94). Nenhuma regra de critério único domina.</p></div>
+        <div class="find"><h4>A heurística pode errar muito</h4><p>No <span class="mono">inst_n11_s01</span>, o ótimo (provado em 1,25 s) é <b>16</b>, mas o EDD deu 43 e o FIFO 46 — quase <b>170% acima</b>. O caso mais dramático de "rápido custa caro em qualidade".</p></div>
+        <div class="find"><h4>Tamanho não é tudo — a estrutura importa</h4><p>As três seeds de n = 11 mostram isso lindamente: <span class="mono">s01</span> fecha em 1,25 s, <span class="mono">s02</span> em 11,67 s, e <span class="mono">s03</span> nem fecha em 60 s. Mesmo tamanho, dificuldades opostas. É por isso que há 3 seeds por tamanho.</p></div>
+      </div>
+    </div>
+
+    <!-- BLOCO 3 -->
+    <div class="block">
+      <div class="block-head"><div class="block-badge">3</div><h2 class="block-title">Síntese do entendimento</h2></div>
+      <p class="block-sub">O que a Parte 1 deixou assentado.</p>
+      <div class="understand" style="margin-top:20px;">
+        <div class="u-tag">Máquina única · em uma frase</div>
+        <p>O problema é fácil de enunciar e difícil de <strong>provar</strong>. A busca exata resolve as instâncias pequenas com folga e mostra, na prática, a <strong>parede de complexidade</strong>: a partir de certo n o tempo explode e o solver deixa de fechar. Mas essa parede é <strong>irregular</strong> — depende de como release e prazo se combinam, não só do tamanho.</p>
+        <p>Nasce aqui o achado que atravessa o trabalho inteiro: <strong>gap grande é prova fraca, não solução ruim</strong>. Em muitas instâncias travadas a solução encontrada já é ótima; o que falta é o certificado. A raiz é a relaxação frouxa do big-M. E as heurísticas, embora instantâneas, <strong>não têm campeã e podem errar muito</strong> — o que justifica pagar o custo do método exato quando ele ainda é viável.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= PARTE 2 ================= -->
+  <section class="panel" id="p2" style="--accent:var(--p2)">
+    <header class="phead">
+      <div class="peyebrow"><span class="pin"></span>Parte 2 · Job Shop</div>
+      <h1 class="ptitle">Muitas máquinas, cada tarefa com seu roteiro</h1>
+      <p class="plede">Generalização da máquina única: várias máquinas, cada tarefa com <strong>várias operações</strong> e <strong>precedência</strong> entre elas, cada uma no seu roteiro. Objetivo: minimizar o <strong>makespan</strong>. Modelo MILO <strong>big-M</strong> (precedência + disjunção por máquina) sobre 10 instâncias JSPLIB, com <strong>três experimentos</strong> encadeados.</p>
+      <div class="gantt-motif">
+        <svg viewBox="0 0 640 130" role="img" aria-label="Gantt de job shop">
+          <line x1="70" y1="118" x2="620" y2="118" stroke="#C7CCDE" stroke-width="1"/>
+          <g font-family="IBM Plex Mono" font-size="12" fill="#6B7386"><text x="8" y="30">M1</text><text x="8" y="66">M2</text><text x="8" y="102">M3</text></g>
+          <rect x="70" y="16" width="90" height="26" rx="5" fill="#1E9AA8" opacity=".85"/><rect x="300" y="16" width="70" height="26" rx="5" fill="#7E6BD4" opacity=".7"/>
+          <rect x="170" y="52" width="110" height="26" rx="5" fill="#7E6BD4" opacity=".85"/><rect x="430" y="52" width="80" height="26" rx="5" fill="#1E9AA8" opacity=".6"/>
+          <rect x="120" y="88" width="70" height="26" rx="5" fill="#E0A028" opacity=".7"/><rect x="380" y="88" width="130" height="26" rx="5" fill="#7E6BD4" opacity=".55"/>
+          <text x="70" y="128" font-family="IBM Plex Mono" font-size="10" fill="#6B7386">tempo →</text>
+        </svg>
+        <div class="gantt-cap">Cada cor é uma tarefa; cada linha, uma máquina. Os roteiros se entrelaçam.</div>
+      </div>
+    </header>
+
+    <!-- BLOCO 1 -->
+    <div class="block">
+      <div class="block-head"><div class="block-badge">1</div><h2 class="block-title">O que foi feito</h2></div>
+      <p class="block-sub">O modelo, as 10 instâncias e os três experimentos completos.</p>
+
+      <div class="sub">
+        <div class="sub-head"><span class="sub-tag">instâncias</span><h3 class="sub-title">O conjunto JSPLIB e o tamanho do modelo</h3></div>
+        <p class="tcap">10 instâncias clássicas, com ótimo conhecido usado como referência.</p>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>Instância</th><th>Tarefas × máq.</th><th>Ótimo</th><th>Família</th><th>Binárias</th></tr></thead>
+            <tbody>
+              <tr><td>ft06</td><td>6 × 6</td><td>55</td><td>Fisher–Thompson</td><td>90</td></tr>
+              <tr><td>la01</td><td>10 × 5</td><td>666</td><td>Lawrence</td><td>225</td></tr>
+              <tr><td>la02</td><td>10 × 5</td><td>655</td><td>Lawrence</td><td>225</td></tr>
+              <tr><td>la03</td><td>10 × 5</td><td>597</td><td>Lawrence</td><td>225</td></tr>
+              <tr><td>la04</td><td>10 × 5</td><td>590</td><td>Lawrence</td><td>225</td></tr>
+              <tr><td>ft10</td><td>10 × 10</td><td>930</td><td>Fisher–Thompson</td><td>450</td></tr>
+              <tr><td>abz5</td><td>10 × 10</td><td>1234</td><td>Adams–Balas–Zawack</td><td>450</td></tr>
+              <tr><td>abz6</td><td>10 × 10</td><td>943</td><td>Adams–Balas–Zawack</td><td>450</td></tr>
+              <tr><td>orb01</td><td>10 × 10</td><td>1059</td><td>Applegate–Cook</td><td>450</td></tr>
+              <tr class="hl"><td>ft20</td><td>20 × 5</td><td>1165</td><td>Fisher–Thompson</td><td>950</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout">Repare na <b>ft20</b>: apesar de "só" 20×5, tem <b>950 binárias</b> — mais que qualquer 10×10. Isso já antecipa por que ela terá o pior gap. O modelo foi validado na <span class="mono">ft06</span> (makespan 55, igual ao ótimo, em 0,65 s).</div>
+      </div>
+
+      <div class="sub">
+        <div class="sub-head"><span class="sub-tag">experimento 1</span><h3 class="sub-title">Método base — big-M frouxo, 240 s</h3></div>
+        <p class="tcap">M = soma de todas as durações. Cinco instâncias fecham na otimalidade; cinco batem no tempo.</p>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>Instância</th><th>Tam.</th><th>Ótimo</th><th>Makespan</th><th>Dist.</th><th>Gap</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td>ft06</td><td>6×6</td><td>55</td><td>55</td><td>0,0%</td><td>0,0%</td><td><span class="badge b-ok">optimal · 0,6s</span></td></tr>
+              <tr><td>la01</td><td>10×5</td><td>666</td><td>666</td><td>0,0%</td><td>0,0%</td><td><span class="badge b-ok">optimal · 159s</span></td></tr>
+              <tr><td>la02</td><td>10×5</td><td>655</td><td>655</td><td>0,0%</td><td>0,0%</td><td><span class="badge b-ok">optimal · 155s</span></td></tr>
+              <tr><td>la04</td><td>10×5</td><td>590</td><td>590</td><td>0,0%</td><td>0,0%</td><td><span class="badge b-ok">optimal · 88s</span></td></tr>
+              <tr><td>abz6</td><td>10×10</td><td>943</td><td>943</td><td>0,0%</td><td>0,0%</td><td><span class="badge b-ok">optimal · 88s</span></td></tr>
+              <tr class="hl"><td>la03</td><td>10×5</td><td>597</td><td>597</td><td>0,0%</td><td class="gapcell">16,2%</td><td><span class="badge b-lim">time_limit</span></td></tr>
+              <tr><td>ft20</td><td>20×5</td><td>1165</td><td>1265</td><td>8,6%</td><td class="gapcell">62,1%</td><td><span class="badge b-lim">time_limit</span></td></tr>
+              <tr><td>ft10</td><td>10×10</td><td>930</td><td>970</td><td>4,3%</td><td class="gapcell">23,5%</td><td><span class="badge b-lim">time_limit</span></td></tr>
+              <tr><td>abz5</td><td>10×10</td><td>1234</td><td>1239</td><td>0,4%</td><td class="gapcell">16,6%</td><td><span class="badge b-lim">time_limit</span></td></tr>
+              <tr><td>orb01</td><td>10×10</td><td>1059</td><td>1113</td><td>5,1%</td><td class="gapcell">30,0%</td><td><span class="badge b-lim">time_limit</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout">Destaque: a <b>la03</b> encontrou o ótimo exato (597) mas ficou com <b>16,2% de gap</b> — solução perfeita, prova fraca. E a <b>abz5</b>, a 0,4% do ótimo, ainda marca 16,6% de gap.</div>
+      </div>
+
+      <div class="sub">
+        <div class="sub-head"><span class="sub-tag">experimento 2</span><h3 class="sub-title">Efeito do tempo — 60 / 120 / 240 s (M frouxo)</h3></div>
+        <p class="tcap">Valores = distância do ótimo (quanto menor, melhor a solução).</p>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>Instância</th><th>60 s</th><th>120 s</th><th>240 s</th></tr></thead>
+            <tbody>
+              <tr><td>la03</td><td>+4,2%</td><td>+2,8%</td><td class="best">+0,0% (gap 16,2%)</td></tr>
+              <tr><td>ft20</td><td>+12,6%</td><td>+8,6%</td><td>+8,6%</td></tr>
+              <tr><td>ft10</td><td>+8,3%</td><td>+6,7%</td><td class="best">+4,3%</td></tr>
+              <tr><td>abz5</td><td>+1,1%</td><td>+0,4%</td><td>+0,4%</td></tr>
+              <tr><td>orb01</td><td>+13,8%</td><td>+8,7%</td><td class="best">+5,1%</td></tr>
+              <tr><td>la01</td><td>time_limit</td><td>time_limit</td><td class="best">optimal (159 s)</td></tr>
+              <tr><td>la02</td><td>time_limit</td><td>time_limit</td><td class="best">optimal (155 s)</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout">Duas leituras: (a) mais tempo <b>melhora a solução</b> (a distância cai); (b) entre 60 e 120 s <b>nenhuma instância nova foi resolvida</b> — as provas de la01/la02 só saíram aos 240 s. Tempo ajuda a solução muito mais do que a prova.</div>
+      </div>
+
+      <div class="sub">
+        <div class="sub-head"><span class="sub-tag">experimento 3</span><h3 class="sub-title">Apertar o M + botões do solver</h3></div>
+        <div class="prose">
+          <p>O M frouxo (um valor global igual para todos os pares) é o principal responsável pela prova fraca. Foram testadas versões mais apertadas:</p>
+        </div>
+        <div class="cards">
+          <div class="card"><div class="k">M seguro por par</div><div class="v" style="font-size:19px;color:var(--ok)">fechou a la03</div><div class="note">gap 16,2% → 0% (OPTIMAL, ~197 s), mesmo solver e tempo. Nas grandes quase não mudou.</div></div>
+          <div class="card"><div class="k">M fino por operação</div><div class="v" style="font-size:19px;">empatou</div><div class="note">Manteve a la03 fechada, mas igualou o frouxo nas grandes (teto ainda folgado).</div></div>
+          <div class="card"><div class="k">Botões do HiGHS</div><div class="v" style="font-size:19px;">ganho modesto</div><div class="note">ft10: 23,7% → 22,0%. O paralelismo (8 núcleos) não acelerou — la03 foi de 183 s a 217 s.</div></div>
+        </div>
+        <p class="tcap" style="margin-top:20px;">Tabela consolidada — <b>M frouxo</b> vs. <b>tratamento final</b> (M fino + botões), 240 s.</p>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>Instância</th><th>Ótimo</th><th>mk frouxo</th><th>gap frouxo</th><th>mk final</th><th>gap final</th><th>Status final</th></tr></thead>
+            <tbody>
+              <tr><td>ft06</td><td>55</td><td>55</td><td>0,0%</td><td>55</td><td>0,0%</td><td><span class="badge b-ok">optimal</span></td></tr>
+              <tr><td>la01</td><td>666</td><td>666</td><td>0,0%</td><td>666</td><td>0,0%</td><td><span class="badge b-ok">optimal</span></td></tr>
+              <tr><td>la02</td><td>655</td><td>655</td><td>0,0%</td><td>655</td><td>0,0%</td><td><span class="badge b-ok">optimal</span></td></tr>
+              <tr class="hl"><td>la03</td><td>597</td><td>597</td><td class="gapcell">16,2%</td><td>597</td><td class="best">0,0%</td><td><span class="badge b-ok">optimal</span></td></tr>
+              <tr><td>la04</td><td>590</td><td>590</td><td>0,0%</td><td>590</td><td>0,0%</td><td><span class="badge b-ok">optimal</span></td></tr>
+              <tr><td>abz6</td><td>943</td><td>943</td><td>0,0%</td><td>943</td><td>0,0%</td><td><span class="badge b-ok">optimal</span></td></tr>
+              <tr><td>ft20</td><td>1165</td><td>1265</td><td class="gapcell">62,1%</td><td>1287</td><td class="gapcell">61,3%</td><td><span class="badge b-lim">time_limit</span></td></tr>
+              <tr><td>ft10</td><td>930</td><td>970</td><td class="gapcell">23,5%</td><td>959</td><td class="gapcell">22,0%</td><td><span class="badge b-lim">time_limit</span></td></tr>
+              <tr><td>abz5</td><td>1234</td><td>1239</td><td class="gapcell">16,6%</td><td>1239</td><td class="gapcell">18,4%</td><td><span class="badge b-lim">time_limit</span></td></tr>
+              <tr><td>orb01</td><td>1059</td><td>1113</td><td class="gapcell">30,0%</td><td>1109</td><td class="gapcell">29,1%</td><td><span class="badge b-lim">time_limit</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout">Observação honesta: o tratamento final <b>não</b> foi uniformemente melhor. Na la03 foi vitória limpa (fechou); na ft20 até <b>piorou</b> o makespan (1265 → 1287); nas demais, variou pouco. Uma tentativa de M apertado demais chegou a deixar a la03 <b>sem solução</b> — corrigida com a trava <span class="mono">M ≥ soma das durações do par</span>.</div>
+      </div>
+    </div>
+
+    <!-- BLOCO 2 -->
+    <div class="block">
+      <div class="block-head"><div class="block-badge">2</div><h2 class="block-title">O que foi percebido</h2></div>
+      <p class="block-sub">As diferenças entre os experimentos, lidas em conjunto.</p>
+      <div class="finds" style="margin-top:20px;">
+        <div class="find key"><h4>Solução ≠ prova (reconfirmado)</h4><p>la01, la02 e la03 acham o ótimo mas não o provam no tempo. Gap alto = prova fraca do big-M, exatamente como na Parte 1.</p></div>
+        <div class="find"><h4>Mais tempo ajuda a solução, não a prova</h4><p>Do Exp. 2: triplicar o tempo baixa a distância do ótimo, mas o limite inferior quase não sobe — o gap teima em ficar aberto.</p></div>
+        <div class="find"><h4>Apertar o M pode fechar — quando a estrutura permite</h4><p>Do Exp. 3: fechou a la03 (16,2% → 0%), mas quase não moveu as grandes. O efeito do aperto depende de como a instância é montada.</p></div>
+        <div class="find"><h4>Estrutura importa mais que tamanho</h4><p>abz5 e abz6 têm o mesmo porte (10×10): a abz6 fecha em 88 s, a abz5 nem fecha em 240 s. E a ft20 (950 binárias) tem o pior gap de todas.</p></div>
+        <div class="find"><h4>Os botões rendem pouco</h4><p>Ajustes do HiGHS deram ganho modesto e não-monotônico; o paralelismo em MIP é fraco. O que move o ponteiro é a formulação, não os botões.</p></div>
+      </div>
+    </div>
+
+    <!-- BLOCO 3 -->
+    <div class="block">
+      <div class="block-head"><div class="block-badge">3</div><h2 class="block-title">Síntese do entendimento</h2></div>
+      <p class="block-sub">O que a Parte 2 assentou.</p>
+      <div class="understand" style="margin-top:20px;">
+        <div class="u-tag">Job shop · em uma frase</div>
+        <p>O job shop é a máquina única com duas famílias de restrição em vez de uma (precedência dentro da tarefa + disjunção em cada máquina), e o mesmo big-M — logo, a <strong>mesma doença</strong>: gap grande é prova fraca. Isso foi reconfirmado, e os três experimentos mostraram <strong>onde cada alavanca atua</strong>: tempo melhora a solução, aperto do M melhora a prova (às vezes fecha), botões quase não mexem.</p>
+        <p>A lição fina é que a <strong>formulação manda mais que o esforço bruto</strong>: apertar o M fechou uma instância travada de graça, algo que nenhum tempo extra ou botão conseguiu. E, mais uma vez, <strong>estrutura venceu tamanho</strong> — a ft20 pequena porém densa e a abz5 provam que contar tarefas não prevê dificuldade.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= PARTE 3 ================= -->
+  <section class="panel" id="p3" style="--accent:var(--p3)">
+    <header class="phead">
+      <div class="peyebrow"><span class="pin"></span>Parte 3 · Flow Shop</div>
+      <h1 class="ptitle">Uma linha de montagem: todos na mesma ordem</h1>
+      <p class="plede">Caso particular do job shop: <strong>todas</strong> as tarefas passam pelas máquinas na <strong>mesma sequência</strong>. A decisão vira <strong>uma única permutação</strong>. O modelo exato é <strong>posicional e sem big-M</strong> (<span class="m">x[j,k]=1</span> se o job j fica na posição k). Heurística NEH; Johnson só é exata para m = 2. Fechamos com um experimento de <strong>28 execuções</strong> (7 instâncias × 4 rodadas).</p>
+      <div class="gantt-motif">
+        <svg viewBox="0 0 640 130" role="img" aria-label="Gantt de flow shop em cascata">
+          <line x1="70" y1="118" x2="620" y2="118" stroke="#C7CCDE" stroke-width="1"/>
+          <g font-family="IBM Plex Mono" font-size="12" fill="#6B7386"><text x="8" y="30">M1</text><text x="8" y="66">M2</text><text x="8" y="102">M3</text></g>
+          <rect x="70" y="16" width="90" height="26" rx="5" fill="#7E6BD4" opacity=".8"/>
+          <rect x="160" y="52" width="90" height="26" rx="5" fill="#7E6BD4" opacity=".65"/>
+          <rect x="250" y="88" width="90" height="26" rx="5" fill="#7E6BD4" opacity=".5"/>
+          <rect x="160" y="16" width="70" height="26" rx="5" fill="#1E9AA8" opacity=".8"/>
+          <rect x="250" y="52" width="70" height="26" rx="5" fill="#1E9AA8" opacity=".65"/>
+          <rect x="340" y="88" width="70" height="26" rx="5" fill="#1E9AA8" opacity=".5"/>
+          <rect x="230" y="16" width="80" height="26" rx="5" fill="#E0A028" opacity=".8"/>
+          <rect x="340" y="52" width="80" height="26" rx="5" fill="#E0A028" opacity=".65"/>
+          <rect x="430" y="88" width="80" height="26" rx="5" fill="#E0A028" opacity=".5"/>
+          <text x="70" y="128" font-family="IBM Plex Mono" font-size="10" fill="#6B7386">tempo →</text>
+        </svg>
+        <div class="gantt-cap">O padrão em escada é a assinatura do flow shop: cada tarefa desce de máquina em máquina na mesma ordem.</div>
+      </div>
+    </header>
+
+    <!-- BLOCO 1 -->
+    <div class="block">
+      <div class="block-head"><div class="block-badge">1</div><h2 class="block-title">O que foi feito</h2></div>
+      <p class="block-sub">O modelo sem big-M, a tabela das 7 instâncias e as 28 execuções.</p>
+
+      <div class="sub">
+        <div class="sub-head"><span class="sub-tag">modelo</span><h3 class="sub-title">Posicional, sem big-M</h3></div>
+        <div class="prose">
+          <p>Em vez do parâmetro M mal calibrado, a formulação usa uma grade de binárias job × posição (<span class="m">x[j,k]</span>), duas restrições de atribuição e um encadeamento recursivo dos tempos de conclusão. Isso permitiu testar a pergunta que amarra o trabalho: <strong>tirando o big-M de cena, o gap teimoso desaparece?</strong></p>
+        </div>
+        <div class="chips">
+          <span class="chip exato"><span class="cd"></span>MILO posicional · sem big-M</span>
+          <span class="chip"><span class="cd"></span>NEH — insere jobs por tempo total decrescente</span>
+          <span class="chip"><span class="cd"></span>Piso afiado — limite inferior de mão</span>
+          <span class="chip"><span class="cd"></span>Johnson — exata só p/ m = 2</span>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sub-head"><span class="sub-tag">tabela principal</span><h3 class="sub-title">As 7 instâncias</h3></div>
+        <p class="tcap">Piso afiado (limite inferior) · exato · NEH · folga do NEH sobre o exato · gap · tempo · status.</p>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>Instância (m×n)</th><th>Piso</th><th>Exato</th><th>NEH</th><th>Folga NEH</th><th>Gap</th><th>Tempo</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td>3 × 10</td><td>126</td><td class="best">126</td><td>126</td><td>0 (0%)</td><td>0,0%</td><td>0,0s</td><td><span class="badge b-ok">ótimo</span></td></tr>
+              <tr><td>3 × 20</td><td>218</td><td class="best">218</td><td>218</td><td>0 (0%)</td><td>0,0%</td><td>0,1s</td><td><span class="badge b-ok">ótimo</span></td></tr>
+              <tr><td>5 × 10</td><td>126</td><td class="best">129</td><td>132</td><td>+3 (2,3%)</td><td>0,0%</td><td>0,1s</td><td><span class="badge b-ok">ótimo</span></td></tr>
+              <tr><td>5 × 20</td><td>256</td><td class="best">263</td><td>269</td><td>+6 (2,3%)</td><td>0,0%</td><td>12,5s</td><td><span class="badge b-ok">ótimo</span></td></tr>
+              <tr><td>5 × 30</td><td>327</td><td class="best">327</td><td>327</td><td>0 (0%)</td><td>0,0%</td><td>3,0s</td><td><span class="badge b-ok">ótimo</span></td></tr>
+              <tr><td>8 × 10</td><td>167</td><td class="best">187</td><td>197</td><td>+10 (5,3%)</td><td>0,0%</td><td>8,0s</td><td><span class="badge b-ok">ótimo</span></td></tr>
+              <tr class="hlv"><td>10 × 20</td><td>278</td><td>297</td><td class="win">292</td><td>−5 (−1,7%)</td><td class="gapcell">5,5%</td><td>120s</td><td><span class="badge b-lim">não fechou</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout">Na <b>10×20</b> a folga é <b>negativa</b>: o "exato" (297) é pior que o NEH (292) porque não é ótimo — é a melhor solução antes de o tempo esgotar. <b>A heurística barata venceu a otimização exata na maior instância.</b></div>
+      </div>
+
+      <div class="sub">
+        <div class="sub-head"><span class="sub-tag">experimento · 28 execuções</span><h3 class="sub-title">4 rodadas × 7 instâncias</h3></div>
+        <div class="prose">
+          <p>Quatro configurações por instância, separando "melhorar a solução" de "melhorar a prova": <strong>1. base</strong> (referência) · <strong>2. warm start</strong> (fila do NEH como solução inicial) · <strong>3. piso inferior</strong> (o piso afiado como restrição) · <strong>4. tudo + 300 s + botões</strong>. Cada execução tem uma checagem de piso (<span class="m">@assert</span>).</p>
+        </div>
+        <p class="tcap"><b>Todas as 28 execuções.</b> As 6 fáceis dão gap 0% nas 4 rodadas (consistência); só a 10×20 tem tensão.</p>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>Rodada</th><th>Solução</th><th>Gap</th><th>Tempo</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr class="grp"><td colspan="5">3×10 · NEH = 126 · piso = 126</td></tr>
+              <tr><td>1. base</td><td>126</td><td>0,0%</td><td>0,0s</td><td><span class="badge b-ok">optimal</span></td></tr>
+              <tr><td>2. warm start</td><td>126</td><td>0,0%</td><td>0,0s</td><td><span class="badge b-ok">optimal</span></td></tr>
+              <tr><td>3. piso</td><td>126</td><td>0,0%</td><td>0,0s</td><td><span class="badge b-ok">optimal</span></td></tr>
+              <tr><td>4. tudo+300s</td><td>126</td><td>0,0%</td><td>0,0s</td><td><span class="badge b-ok">optimal</span></td></tr>
+              <tr class="grp"><td colspan="5">3×20 · NEH = 218 · piso = 218</td></tr>
+              <tr><td>1. base</td><td>218</td><td>0,0%</td><td>0,1s</td><td><span class="badge b-ok">optimal</span></td></tr>
+              <tr><td>2. warm start</td><td>218</td><td>0,0%</td><td>0,0s</td><td><span class="badge b-ok">optimal</span></td></tr>
+              <tr><td>3. piso</td><td>218</td><td>0,0%</td><td>0,4s</td><td><span class="badge b-ok">optimal</span></td></tr>
+              <tr><td>4. tudo+300s</td><td>218</td><td>0,0%</td><td>0,0s</td><td><span class="badge b-ok">optimal</span></td></tr>
+              <tr class="grp"><td colspan="5">5×10 · NEH = 132 · piso = 126 · ótimo = 129</td></tr>
+              <tr><td>1. base</td><td>129</td><td>0,0%</td><td>0,1s</td><td><span class="badge b-ok">optimal</span></td></tr>
+              <tr><td>2. warm start</td><td>129</td><td>0,0%</td><td>0,1s</td><td><span class="badge b-ok">optimal</span></td></tr>
+              <tr><td>3. piso</td><td>129</td><td>0,0%</td><td>0,1s</td><td><span class="badge b-ok">optimal</span></td></tr>
+              <tr><td>4. tudo+300s</td><td>129</td><td>0,0%</td><td>0,1s</td><td><span class="badge b-ok">optimal</span></td></tr>
+              <tr class="grp"><td colspan="5">5×20 · NEH = 269 · piso = 256 · ótimo = 263</td></tr>
+              <tr><td>1. base</td><td>263</td><td>0,0%</td><td>12,5s</td><td><span class="badge b-ok">optimal</span></td></tr>
+              <tr><td>2. warm start</td><td>263</td><td>0,0%</td><td>12,5s</td><td><span class="badge b-ok">optimal</span></td></tr>
+              <tr><td>3. piso</td><td>263</td><td>0,0%</td><td>8,8s</td><td><span class="badge b-ok">optimal</span></td></tr>
+              <tr><td>4. tudo+300s</td><td>263</td><td>0,0%</td><td>14,4s</td><td><span class="badge b-ok">optimal</span></td></tr>
+              <tr class="grp"><td colspan="5">5×30 · NEH = 327 · piso = 327</td></tr>
+              <tr><td>1. base</td><td>327</td><td>0,0%</td><td>3,0s</td><td><span class="badge b-ok">optimal</span></td></tr>
+              <tr><td>2. warm start</td><td>327</td><td>0,0%</td><td class="best">0,1s</td><td><span class="badge b-ok">optimal</span></td></tr>
+              <tr><td>3. piso</td><td>327</td><td>0,0%</td><td>4,6s</td><td><span class="badge b-ok">optimal</span></td></tr>
+              <tr><td>4. tudo+300s</td><td>327</td><td>0,0%</td><td>0,2s</td><td><span class="badge b-ok">optimal</span></td></tr>
+              <tr class="grp"><td colspan="5">8×10 · NEH = 197 · piso = 167 · ótimo = 187</td></tr>
+              <tr><td>1. base</td><td>187</td><td>0,0%</td><td>8,0s</td><td><span class="badge b-ok">optimal</span></td></tr>
+              <tr><td>2. warm start</td><td>187</td><td>0,0%</td><td>5,6s</td><td><span class="badge b-ok">optimal</span></td></tr>
+              <tr><td>3. piso</td><td>187</td><td>0,0%</td><td>6,2s</td><td><span class="badge b-ok">optimal</span></td></tr>
+              <tr><td>4. tudo+300s</td><td>187</td><td>0,0%</td><td>5,0s</td><td><span class="badge b-ok">optimal</span></td></tr>
+              <tr class="grp"><td colspan="5">10×20 · NEH = 292 · piso = 278 — a única com gap aberto</td></tr>
+              <tr class="hlv"><td>1. base</td><td>297</td><td class="gapcell">5,5%</td><td>120s</td><td><span class="badge b-lim">time_limit</span></td></tr>
+              <tr class="hlv"><td>2. warm start</td><td>292</td><td class="gapcell">3,6%</td><td>120s</td><td><span class="badge b-lim">time_limit</span></td></tr>
+              <tr class="hlv"><td>3. piso</td><td class="best">290</td><td class="gapcell">3,0%</td><td>120s</td><td><span class="badge b-lim">time_limit</span></td></tr>
+              <tr class="hlv"><td>4. tudo+300s</td><td>292</td><td class="gapcell">3,2%</td><td>300s</td><td><span class="badge b-lim">time_limit</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout">Na 10×20 a solução caiu <b>297 → 292 → 290</b> (abaixo do próprio NEH) fácil, mas o gap só encolheu <b>5,5% → 3,0%</b> e <b>nunca fechou</b> — nem com 300 s, warm start, piso e botões. Curiosidade: a rodada 4 (3,2%) ficou levemente <b>pior</b> que a 3 (3,0%); o branch-and-bound não é monotônico.</div>
+      </div>
+    </div>
+
+    <!-- BLOCO 2 -->
+    <div class="block">
+      <div class="block-head"><div class="block-badge">2</div><h2 class="block-title">O que foi percebido</h2></div>
+      <p class="block-sub">O que as 7 instâncias e as 28 execuções revelaram.</p>
+      <div class="finds" style="margin-top:20px;">
+        <div class="find"><h4>A formulação é fiel</h4><p>O solver reproduziu os valores de referência do professor (126, 129, 263), confirmados por uma calculadora de makespan independente e por um piso calculado à mão.</p></div>
+        <div class="find"><h4>Sem big-M ≠ relaxação apertada</h4><p>A relaxação LP do modelo posicional também é frouxa (limite inicial de 19 na 3×10, ~85% de gap no arranque). Quem fecha é o branch-and-bound (1 nó, 0,02 s), não a relaxação.</p></div>
+        <div class="find"><h4>Estrutura importa mais que tamanho</h4><p>A 5×30 (30 jobs) fecha em 3,0 s, enquanto a 5×20 (menos jobs) leva 12,5 s. Mais jobs, menos tempo. Mesmo padrão das Partes 1 e 2.</p></div>
+        <div class="find"><h4>O piso afiado às vezes é exato, às vezes não</h4><p>Coincide com o ótimo na 3×10, 3×20 e 5×30, mas fica abaixo na 5×10 (126 vs 129) e na 8×10 (167 vs 187). Nesses, quem fechou o gap foi o solver, não o piso.</p></div>
+        <div class="find"><h4>Melhorar a solução é barato; fechar a prova é caro</h4><p>Do experimento: warm start + piso derrubaram a 10×20 abaixo do NEH sem esforço, mas o gap resistiu a tudo.</p></div>
+        <div class="find key"><h4>A causa do gap mudou; o sintoma permanece</h4><p>Sem big-M, o gap ainda resiste na instância grande — agora pela pura explosão combinatória da permutação (as n² binárias). Mesmo sintoma, causa diferente.</p></div>
+        <div class="find"><h4>Na maior instância, a heurística vence o exato</h4><p>NEH (292) supera a melhor solução provada pelo exato no tempo. O NEH acerta o ótimo em 3 das 7 e fica a ≤ 5,3% nas demais.</p></div>
+        <div class="find"><h4>Johnson não se aplica</h4><p>Exata só para m = 2, e todas as instâncias têm m ≥ 3. Excluída corretamente — limitação do conjunto, não do método.</p></div>
+      </div>
+    </div>
+
+    <!-- BLOCO 3 -->
+    <div class="block">
+      <div class="block-head"><div class="block-badge">3</div><h2 class="block-title">Síntese do entendimento</h2></div>
+      <p class="block-sub">O que a Parte 3 assentou — e como fecha o trabalho.</p>
+      <div class="understand" style="margin-top:20px;">
+        <div class="u-tag">Flow shop · em uma frase</div>
+        <p>Trocar o job shop pelo flow shop reduz a decisão a <strong>uma permutação</strong> e permite um modelo <strong>sem big-M</strong>. A hipótese testada era que, sem big-M, o gap teimoso sumiria. O resultado foi mais interessante: o gap <strong>encolheu de causa mas não de existência</strong>. Sem o M frouxo, some a instabilidade da relaxação; mas a dificuldade combinatória de fundo (as n² binárias, NP-difícil para m ≥ 3) continua cobrando seu preço na 10×20.</p>
+        <p>Ou seja: remover o big-M <strong>troca o problema de lugar, não o resolve</strong>. E o trabalho fecha com a mesma moral das três partes — <strong>melhorar a solução é barato, fechar a prova é caro</strong> — coroada pela imagem mais forte de todas: na maior instância, a <strong>heurística barata bateu a otimização exata</strong>.</p>
+      </div>
+    </div>
+  </section>
+
+  </main>
+</div>
+
+<script>
+  (function(){
+    var navBtns=document.querySelectorAll('.nav-item');
+    var panels=document.querySelectorAll('.panel');
+    var sidebar=document.getElementById('sidebar');
+    var scrim=document.getElementById('scrim');
+    var menuBtn=document.getElementById('menuBtn');
+    function show(id){
+      panels.forEach(function(p){p.classList.toggle('active',p.id===id);});
+      navBtns.forEach(function(b){b.classList.toggle('active',b.dataset.panel===id);});
+      window.scrollTo({top:0,behavior:'auto'});
+      closeMenu();
+    }
+    navBtns.forEach(function(b){b.addEventListener('click',function(){show(b.dataset.panel);});});
+    function openMenu(){sidebar.classList.add('open');scrim.classList.add('show');}
+    function closeMenu(){sidebar.classList.remove('open');scrim.classList.remove('show');}
+    if(menuBtn)menuBtn.addEventListener('click',openMenu);
+    if(scrim)scrim.addEventListener('click',closeMenu);
+  })();
+</script>
+</body>
+</html>
