@@ -1,0 +1,5 @@
+line 1 offset 0
+syntax error
+context:   >>> write g "C:\Users\edmil\Desktop\benchmark_nlp\ampl_nlp_source\lukvli11" <<< ;
+
+For support/feedback go to https://discuss.ampl.com or e-mail <support@ampl.com>

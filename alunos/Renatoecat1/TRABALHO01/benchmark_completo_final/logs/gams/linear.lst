@@ -1,0 +1,245 @@
+GAMS 53.5.1  f2e5fac3 May 20, 2026          WEX-WEI x86 64bit/MS Windows - 06/14/26 21:50:16 Page 1
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+C o m p i l a t i o n
+
+
+   1  * GAMS-model linear.dag.gms written by dag2gams Converter at 29/03/2004 14:9:9
+   2  * University of Vienna
+   4   Set i/1*20/;
+   5   Set j/1*24/;
+   6   Equations objcon
+   7  con1
+   8  con2
+   9  con3
+  10  con4
+  11  con5
+  12  con6
+  13  con7
+  14  con8
+  15  con9
+  16  con10
+  17  con11
+  18  con12
+  19  con13
+  20  con14
+  21  con15
+  22  con16
+  23  con17
+  24  con18
+  25  con19
+  26  con20
+  27  ;
+  28  Variables x(j), obj;
+  29  * Objective function (to be minimized)
+  30  objcon.. obj =e= abs(x('1')) +
+  31  abs(x('2')) +
+  32  abs(x('3')) +
+  33  abs(x('4')) +
+  34  abs(x('5')) +
+  35  abs(x('6')) +
+  36  abs(x('7')) +
+  37  abs(x('8')) +
+  38  abs(x('9')) +
+  39  abs(x('10')) +
+  40  abs(x('11')) +
+  41  abs(x('12')) +
+  42  abs(x('13')) +
+  43  abs(x('14')) +
+  44  abs(x('15')) +
+  45  abs(x('16')) +
+  46  abs(x('17')) +
+  47  abs(x('18')) +
+  48  abs(x('19')) +
+  49  abs(x('20'));
+  50   
+  51   
+  52  con1.. x('20') +
+  53  x('21') +
+  54  64 * x('22') +
+  55  79 * x('23') +
+  56  38 * x('24') =e= 80;
+  57  con2.. x('19') +
+  58  x('21') +
+  59  70 * x('22') +
+  60  83 * x('23') +
+  61  39 * x('24') =e= 101;
+  62  con3.. x('18') +
+  63  x('21') +
+  64  71 * x('22') +
+  65  80 * x('23') +
+  66  29 * x('24') =e= 98;
+  67  con4.. x('17') +
+  68  x('21') +
+  69  74 * x('22') +
+  70  78 * x('23') +
+  71  31 * x('24') =e= 100;
+  72  con5.. x('16') +
+  73  x('21') +
+  74  76 * x('22') +
+  75  76 * x('23') +
+  76  41 * x('24') =e= 91;
+  77  con6.. x('15') +
+  78  x('21') +
+  79  82 * x('22') +
+  80  70 * x('23') +
+  81  48 * x('24') =e= 84;
+  82  con7.. x('14') +
+  83  x('21') +
+  84  67 * x('22') +
+  85  76 * x('23') +
+  86  50 * x('24') =e= 75;
+  87  con8.. x('13') +
+  88  x('21') +
+  89  77 * x('22') +
+  90  76 * x('23') +
+  91  42 * x('24') =e= 94;
+  92  con9.. x('12') +
+  93  x('21') +
+  94  80 * x('22') +
+  95  72 * x('23') +
+  96  45 * x('24') =e= 93;
+  97  con10.. x('11') +
+  98  x('21') +
+  99  82 * x('22') +
+ 100  71 * x('23') +
+ 101  46 * x('24') =e= 89;
+ 102  con11.. x('10') +
+ 103  x('21') +
+ 104  70 * x('22') +
+ 105  73 * x('23') +
+ 106  37 * x('24') =e= 88;
+ 107  con12.. x('9') +
+ 108  x('21') +
+ 109  93 * x('22') +
+ 110  78 * x('23') +
+ 111  36 * x('24') =e= 118;
+ 112  con13.. x('8') +
+ 113  x('21') +
+ 114  96 * x('22') +
+ 115  80 * x('23') +
+ 116  36 * x('24') =e= 130;
+ 117  con14.. x('7') +
+ 118  x('21') +
+ 119  73 * x('22') +
+ 120  69 * x('23') +
+ 121  46 * x('24') =e= 93;
+ 122  con15.. x('6') +
+ 123  x('21') +
+ 124  74 * x('22') +
+ 125  69 * x('23') +
+ 126  46 * x('24') =e= 96;
+ 127  con16.. x('5') +
+ 128  x('21') +
+ 129  76 * x('22') +
+ 130  73 * x('23') +
+ 131  43 * x('24') =e= 90;
+ 132  con17.. x('4') +
+ 133  x('21') +
+ 134  74 * x('22') +
+ 135  72 * x('23') +
+ 136  44 * x('24') =e= 97;
+ 137  con18.. x('3') +
+ 138  x('21') +
+ 139  75 * x('22') +
+ 140  73 * x('23') +
+ 141  42 * x('24') =e= 99;
+ 142  con19.. x('2') +
+ 143  x('21') +
+ 144  82 * x('22') +
+ 145  78 * x('23') +
+ 146  42 * x('24') =e= 93;
+ 147  con20.. x('1') +
+ 148  x('21') +
+ 149  85 * x('22') +
+ 150  76 * x('23') +
+ 151  44 * x('24') =e= 99;
+ 152  x.lo('1')=-100;
+ 153  x.up('1')=100;
+ 154  x.lo('2')=-100;
+ 155  x.up('2')=100;
+ 156  x.lo('3')=-100;
+ 157  x.up('3')=100;
+ 158  x.lo('4')=-100;
+ 159  x.up('4')=100;
+ 160  x.lo('5')=-100;
+ 161  x.up('5')=100;
+ 162  x.lo('6')=-100;
+ 163  x.up('6')=100;
+ 164  x.lo('7')=-100;
+ 165  x.up('7')=100;
+ 166  x.lo('8')=-100;
+ 167  x.up('8')=100;
+ 168  x.lo('9')=-100;
+ 169  x.up('9')=100;
+ 170  x.lo('10')=-100;
+ 171  x.up('10')=100;
+ 172  x.lo('11')=-100;
+ 173  x.up('11')=100;
+ 174  x.lo('12')=-100;
+ 175  x.up('12')=100;
+ 176  x.lo('13')=-100;
+ 177  x.up('13')=100;
+ 178  x.lo('14')=-100;
+ 179  x.up('14')=100;
+ 180  x.lo('15')=-100;
+ 181  x.up('15')=100;
+ 182  x.lo('16')=-100;
+ 183  x.up('16')=100;
+ 184  x.lo('17')=-100;
+ 185  x.up('17')=100;
+ 186  x.lo('18')=-100;
+ 187  x.up('18')=100;
+ 188  x.lo('19')=-100;
+ 189  x.up('19')=100;
+ 190  x.lo('20')=-100;
+ 191  x.up('20')=100;
+ 192  Model m/All/;
+ 193  m.workspace = 32;
+ 194  m.optfile = 1;options nlp=convert;
+ 195  Solve m using nlp minimizing obj;
+****                                  $61,256
+****  61  Functions with discontinuous derivatives are illegal
+****      In nlp models. use "dnlp"
+**** 256  Error(s) in analyzing solve statement.
+**** The following NLP errors were detected in model m:
+****  61 equation objcon.. the function ABS is not smooth, use DNLP
+****  61 equation objcon.. the function ABS is not smooth, use DNLP
+****  61 equation objcon.. the function ABS is not smooth, use DNLP
+****  61 equation objcon.. the function ABS is not smooth, use DNLP
+****  61 equation objcon.. the function ABS is not smooth, use DNLP
+****  61 equation objcon.. the function ABS is not smooth, use DNLP
+****  61 equation objcon.. the function ABS is not smooth, use DNLP
+****  61 equation objcon.. the function ABS is not smooth, use DNLP
+****  61 equation objcon.. the function ABS is not smooth, use DNLP
+****  61 equation objcon.. the function ABS is not smooth, use DNLP
+****  61 equation objcon.. the function ABS is not smooth, use DNLP
+****  61 equation objcon.. the function ABS is not smooth, use DNLP
+****  61 equation objcon.. the function ABS is not smooth, use DNLP
+****  61 equation objcon.. the function ABS is not smooth, use DNLP
+****  61 equation objcon.. the function ABS is not smooth, use DNLP
+****  61 equation objcon.. the function ABS is not smooth, use DNLP
+****  61 equation objcon.. the function ABS is not smooth, use DNLP
+****  61 equation objcon.. the function ABS is not smooth, use DNLP
+****  61 equation objcon.. the function ABS is not smooth, use DNLP
+****  61 equation objcon.. the function ABS is not smooth, use DNLP
+ 196  display x.l, obj.l;
+ 197   
+ 198   
+ 199   
+
+**** 2 ERROR(S)   0 WARNING(S)
+
+
+COMPILATION TIME     =        0.000 SECONDS      3 MB  53.5.1 f2e5fac3 WEX-WEI
+
+
+USER: GAMS Demo, for EULA and demo limitations see   G260130+0003Cc-GEN
+      https://www.gams.com/latest/docs/UG%5FLicense.html         DC0000
+
+
+**** FILE SUMMARY
+
+Input      C:\Users\edmil\Desktop\benchmark_nlp\coconut_gams\linear.gms
+Output     C:\Users\edmil\Desktop\benchmark_nlp\logs\gams\linear.lst
+
+**** USER ERROR(S) ENCOUNTERED
