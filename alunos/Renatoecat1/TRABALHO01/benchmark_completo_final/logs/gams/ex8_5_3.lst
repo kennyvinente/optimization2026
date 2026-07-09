@@ -1,0 +1,164 @@
+GAMS 53.5.1  f2e5fac3 May 20, 2026          WEX-WEI x86 64bit/MS Windows - 06/14/26 21:50:06 Page 1
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+C o m p i l a t i o n
+
+
+   1  * GAMS-model ex8_5_3.dag.gms written by dag2gams Converter at 29/03/2004 13:50:01
+   2  * University of Vienna
+   4   Set i/1*5/;
+   5   Set j/1*5/;
+   6   Equations objcon
+   7  con1
+   8  con2
+   9  con3
+  10  con4
+  11  con5
+  12  ;
+  13  Variables x(j), obj;
+  14  * Objective function (to be minimized)
+  15  objcon.. obj =e= log(x('1')) * x('1') +
+  16  log(x('2')) * x('2') -
+  17  log(x('3') -
+  18  x('5')) -
+  19  (log(x('5') / x('3') + 1) * x('4')) / x('5') +
+  20  5.0464317551216 * x('1') +
+  21  0.36687705576968899 * x('2') +
+  22  x('3') - 1;
+  23   
+  24   
+  25  con1.. x('1') +
+  26  x('2') =e= 1;
+  27  con2.. (-0.077151700000000004) * x('1') -
+  28  0.076578400000000005 * x('2') +
+  29  x('5') =e= 0;
+  30  con3..x('3') -
+  31  x('5') =g= 0;
+  32  con4.. x('4') -
+  33  0.37961499999999998 * power(x('2'), 2) -
+  34  1.04633 * power(x('1'), 2) -
+  35  1.1596439999999999 * x('1') * x('2') =e= 0;
+  36  con5.. -power(x('3'), 2) -
+  37  x('4') * x('5') +
+  38  power(x('3'), 3) +
+  39  x('3') * (x('4') -
+  40  x('5') -
+  41  power(x('5'), 2)) =e= 0;
+  42  x.lo('1')=0.050000000000000003;
+  43  x.lo('2')=0;
+  44  x.lo('3')=0;
+  45  x.lo('5')=0;
+  46  Model m/All/;
+  47  m.workspace = 32;
+  48  m.optfile = 1;options nlp=convert;
+  49  Solve m using nlp minimizing obj;
+  50  display x.l, obj.l;
+  51   
+  52   
+  53   
+
+
+COMPILATION TIME     =        0.000 SECONDS      3 MB  53.5.1 f2e5fac3 WEX-WEI
+GAMS 53.5.1  f2e5fac3 May 20, 2026          WEX-WEI x86 64bit/MS Windows - 06/14/26 21:50:06 Page 2
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Equation Listing    SOLVE m Using NLP From line 49
+
+
+**** Exec Error at line 15: log: FUNC SINGULAR: x = 0
+**** Exec Error at line 15: division by zero (0)
+
+---- objcon  =E=  
+
+objcon..  - (3.05069948156761)*x(1) + (UNDF)*x(2) + (1E299)*x(3) + (UNDF)*x(4) - (1E299)*x(5) + obj =E= -1 ; (LHS = UNDF)
+     
+
+---- con1  =E=  
+
+con1..  x(1) + x(2) =E= 1 ; (LHS = 0.05, INFES = 0.95 ****)
+     
+
+---- con2  =E=  
+
+con2..  - 0.0771517*x(1) - 0.0765784*x(2) + x(5) =E= 0 ; (LHS = -0.003857585, INFES = 0.003857585 ****)
+     
+
+---- con3  =G=  
+
+con3..  x(3) - x(5) =G= 0 ; (LHS = 0)
+     
+
+---- con4  =E=  
+
+con4..  - (0.104633)*x(1) - (0.0579822)*x(2) + x(4) =E= 0 ; (LHS = -0.002615825, INFES = 0.002615825 ****)
+     
+
+---- con5  =E=  
+
+con5..  (0)*x(3) + (0)*x(4) + (0)*x(5) =E= 0 ; (LHS = 0)
+     
+GAMS 53.5.1  f2e5fac3 May 20, 2026          WEX-WEI x86 64bit/MS Windows - 06/14/26 21:50:06 Page 3
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Column Listing      SOLVE m Using NLP From line 49
+
+
+---- x  
+
+x(1)
+                (.LO, .L, .UP, .M = 0.05, 0.05, +INF, 0)
+      (-3.0507) objcon
+        1       con1
+       -0.0772  con2
+      (-0.1046) con4
+        0       (OLD LEVEL ****)
+
+x(2)
+                (.LO, .L, .UP, .M = 0, 0, +INF, 0)
+         (UNDF) objcon
+        1       con1
+       -0.0766  con2
+      (-0.058)  con4
+
+x(3)
+                (.LO, .L, .UP, .M = 0, 0, +INF, 0)
+ (1.00000E+299) objcon
+        1       con3
+       (0)      con5
+
+REMAINING 2 ENTRIES SKIPPED
+
+---- obj  
+
+obj
+                (.LO, .L, .UP, .M = -INF, 0, +INF, 0)
+        1       objcon
+
+GAMS 53.5.1  f2e5fac3 May 20, 2026          WEX-WEI x86 64bit/MS Windows - 06/14/26 21:50:06 Page 4
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Model Statistics    SOLVE m Using NLP From line 49
+
+
+MODEL STATISTICS
+
+BLOCKS OF EQUATIONS           6     SINGLE EQUATIONS            6
+BLOCKS OF VARIABLES           2     SINGLE VARIABLES            6
+NON ZERO ELEMENTS            19     NON LINEAR N-Z              0
+CODE LENGTH                  61     CONSTANT POOL              21
+
+
+GENERATION TIME      =        0.016 SECONDS      4 MB  53.5.1 f2e5fac3 WEX-WEI
+
+**** SOLVE from line 49 ABORTED, EXECERROR = 2
+
+
+EXECUTION TIME       =        0.016 SECONDS      4 MB  53.5.1 f2e5fac3 WEX-WEI
+
+
+USER: GAMS Demo, for EULA and demo limitations see   G260130+0003Cc-GEN
+      https://www.gams.com/latest/docs/UG%5FLicense.html         DC0000
+
+
+**** FILE SUMMARY
+
+Input      C:\Users\edmil\Desktop\benchmark_nlp\coconut_gams\ex8_5_3.gms
+Output     C:\Users\edmil\Desktop\benchmark_nlp\logs\gams\ex8_5_3.lst
+
+**** USER ERROR(S) ENCOUNTERED

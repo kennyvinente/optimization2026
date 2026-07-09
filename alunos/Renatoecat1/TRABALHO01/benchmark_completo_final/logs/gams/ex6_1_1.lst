@@ -1,0 +1,230 @@
+GAMS 53.5.1  f2e5fac3 May 20, 2026          WEX-WEI x86 64bit/MS Windows - 06/14/26 21:49:54 Page 1
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+C o m p i l a t i o n
+
+
+   1  * GAMS-model ex6_1_1.dag.gms written by dag2gams Converter at 29/03/2004 13:50:04
+   2  * University of Vienna
+   4   Set i/1*6/;
+   5   Set j/1*8/;
+   6   Equations objcon
+   7  con1
+   8  con2
+   9  con3
+  10  con4
+  11  con5
+  12  con6
+  13  ;
+  14  Variables x(j), obj;
+  15  * Objective function (to be minimized)
+  16  objcon.. obj =e= (log(x('1')) -
+  17  log(x('1') +
+  18  x('3'))) * x('1') +
+  19  (log(x('3')) -
+  20  log(x('1') +
+  21  x('3'))) * x('3') +
+  22  (log(x('2')) -
+  23  log(x('2') +
+  24  x('4'))) * x('2') +
+  25  (log(x('4')) -
+  26  log(x('2') +
+  27  x('4'))) * x('4') +
+  28  0.92535662677835795 * x('1') * x('7') +
+  29  0.92535662677835795 * x('2') * x('8') +
+  30  0.74601454009675305 * x('3') * x('5') +
+  31  0.74601454009675305 * x('4') * x('6');
+  32   
+  33   
+  34  con1.. x('3') +
+  35  x('4') =e= 0.5;
+  36  con2.. x('1') +
+  37  x('2') =e= 0.5;
+  38  con3.. -x('4') +
+  39  x('8') * (0.30794102682159502 * x('2') +
+  40  x('4')) =e= 0;
+  41  con4.. -x('3') +
+  42  x('7') * (0.30794102682159502 * x('1') +
+  43  x('3')) =e= 0;
+  44  con5.. -x('2') +
+  45  x('6') * (x('2') +
+  46  0.159040857374844 * x('4')) =e= 0;
+  47  con6.. -x('1') +
+  48  x('5') * (x('1') +
+  49  0.159040857374844 * x('3')) =e= 0;
+  50  x.lo('1')=9.9999999999999995e-08;
+  51  x.up('1')=0.5;
+  52  x.lo('2')=9.9999999999999995e-08;
+  53  x.up('2')=0.5;
+  54  x.lo('3')=9.9999999999999995e-08;
+  55  x.up('3')=0.5;
+  56  x.lo('4')=9.9999999999999995e-08;
+  57  x.up('4')=0.5;
+  58  x.lo('5')=0;
+  59  x.lo('6')=0;
+  60  x.lo('7')=0;
+  61  x.lo('8')=0;
+  62  Model m/All/;
+  63  m.workspace = 32;
+  64  m.optfile = 1;options nlp=convert;
+  65  Solve m using nlp minimizing obj;
+  66  display x.l, obj.l;
+  67   
+  68   
+  69   
+
+
+COMPILATION TIME     =        0.000 SECONDS      3 MB  53.5.1 f2e5fac3 WEX-WEI
+GAMS 53.5.1  f2e5fac3 May 20, 2026          WEX-WEI x86 64bit/MS Windows - 06/14/26 21:49:54 Page 2
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Equation Listing    SOLVE m Using NLP From line 65
+
+
+---- objcon  =E=  
+
+objcon..  (0.693147180559945)*x(1) + (0.693147180559945)*x(2) + (0.693147180559945)*x(3) + (0.693147180559945)*x(4) - (7.46014540096753E-8)*x(5) - (7.46014540096753E-8)*x(6) - (9.25356626778358E-8)*x(7) - (9.25356626778358E-8)*x(8) + obj =E= 0 ; (LHS = 2.77258872223978E-7, INFES = 2.77258872223978E-7 ****)
+     
+
+---- con1  =E=  
+
+con1..  x(3) + x(4) =E= 0.5 ; (LHS = 2.00000000005751E-7, INFES = 0.4999998 ****)
+     
+
+---- con2  =E=  
+
+con2..  x(1) + x(2) =E= 0.5 ; (LHS = 2.00000000005751E-7, INFES = 0.4999998 ****)
+     
+
+---- con3  =E=  
+
+con3..  (0)*x(2) - (1)*x(4) + (1.30794102682159E-7)*x(8) =E= 0 ; (LHS = -1E-7, INFES = 1E-7 ****)
+     
+
+---- con4  =E=  
+
+con4..  (0)*x(1) - (1)*x(3) + (1.30794102682159E-7)*x(7) =E= 0 ; (LHS = -1E-7, INFES = 1E-7 ****)
+     
+
+---- con5  =E=  
+
+con5..  - (1)*x(2) + (0)*x(4) + (1.15904085737484E-7)*x(6) =E= 0 ; (LHS = -1E-7, INFES = 1E-7 ****)
+     
+
+---- con6  =E=  
+
+con6..  - (1)*x(1) + (0)*x(3) + (1.15904085737484E-7)*x(5) =E= 0 ; (LHS = -1E-7, INFES = 1E-7 ****)
+     
+GAMS 53.5.1  f2e5fac3 May 20, 2026          WEX-WEI x86 64bit/MS Windows - 06/14/26 21:49:54 Page 3
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Column Listing      SOLVE m Using NLP From line 65
+
+
+---- x  
+
+x(1)
+                (.LO, .L, .UP, .M = 1E-7, 1E-7, 0.5, 0)
+       (0.6931) objcon
+        1       con2
+       (0)      con4
+      (-1)      con6
+        0       (OLD LEVEL ****)
+
+x(2)
+                (.LO, .L, .UP, .M = 1E-7, 1E-7, 0.5, 0)
+       (0.6931) objcon
+        1       con2
+       (0)      con3
+      (-1)      con5
+        0       (OLD LEVEL ****)
+
+x(3)
+                (.LO, .L, .UP, .M = 1E-7, 1E-7, 0.5, 0)
+       (0.6931) objcon
+        1       con1
+      (-1)      con4
+       (0)      con6
+        0       (OLD LEVEL ****)
+
+REMAINING 5 ENTRIES SKIPPED
+
+---- obj  
+
+obj
+                (.LO, .L, .UP, .M = -INF, 0, +INF, 0)
+        1       objcon
+
+GAMS 53.5.1  f2e5fac3 May 20, 2026          WEX-WEI x86 64bit/MS Windows - 06/14/26 21:49:54 Page 4
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Range Statistics    SOLVE m Using NLP From line 65
+
+
+RANGE STATISTICS (ABSOLUTE NON-ZERO FINITE VALUES)
+
+RHS       [min, max] : [ 5.000E-01, 5.000E-01] - Zero values observed as well
+Bound     [min, max] : [ 1.000E-07, 5.000E-01] - Zero values observed as well
+Matrix    [min, max] : [ 7.460E-08, 1.000E+00] - Zero values observed as well
+
+GAMS 53.5.1  f2e5fac3 May 20, 2026          WEX-WEI x86 64bit/MS Windows - 06/14/26 21:49:54 Page 5
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Model Statistics    SOLVE m Using NLP From line 65
+
+
+MODEL STATISTICS
+
+BLOCKS OF EQUATIONS           7     SINGLE EQUATIONS            7
+BLOCKS OF VARIABLES           2     SINGLE VARIABLES            9  4 projected
+NON ZERO ELEMENTS            25     NON LINEAR N-Z             20
+CODE LENGTH                  83     CONSTANT POOL              20
+
+
+GENERATION TIME      =        0.062 SECONDS      4 MB  53.5.1 f2e5fac3 WEX-WEI
+GAMS 53.5.1  f2e5fac3 May 20, 2026          WEX-WEI x86 64bit/MS Windows - 06/14/26 21:49:54 Page 6
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Solution Report     SOLVE m Using NLP From line 65
+
+
+               S O L V E      S U M M A R Y
+
+     MODEL   m                   OBJECTIVE  obj
+     TYPE    NLP                 DIRECTION  MINIMIZE
+     SOLVER  CONVERT             FROM LINE  65
+
+**** SOLVER STATUS     1 Normal Completion
+**** MODEL STATUS      14 No Solution Returned
+**** OBJECTIVE VALUE                0.0000
+
+ RESOURCE USAGE, LIMIT          0.015 10000000000.000
+ ITERATION COUNT, LIMIT         0    2147483647
+ EVALUATION ERRORS              0             0
+
+*** Error Cannot open parameter file "C:\Users\edmil\Desktop\benchmark_nlp\convert.opt"
+*** Error Error code = 2; No such file or directory
+
+--- Writing Dict      : dict.txt
+--- Writing Gams      : gams.gms
+
+
+No solution returned
+GAMS 53.5.1  f2e5fac3 May 20, 2026          WEX-WEI x86 64bit/MS Windows - 06/14/26 21:49:54 Page 7
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+E x e c u t i o n
+
+
+----     66 VARIABLE x.L  
+
+                      ( ALL       0.000 )
+
+
+----     66 VARIABLE obj.L                 =        0.000  
+
+
+EXECUTION TIME       =        0.187 SECONDS      4 MB  53.5.1 f2e5fac3 WEX-WEI
+
+
+USER: GAMS Demo, for EULA and demo limitations see   G260130+0003Cc-GEN
+      https://www.gams.com/latest/docs/UG%5FLicense.html         DC0000
+
+
+**** FILE SUMMARY
+
+Input      C:\Users\edmil\Desktop\benchmark_nlp\coconut_gams\ex6_1_1.gms
+Output     C:\Users\edmil\Desktop\benchmark_nlp\logs\gams\ex6_1_1.lst

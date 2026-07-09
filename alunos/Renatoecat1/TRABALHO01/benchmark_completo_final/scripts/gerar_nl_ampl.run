@@ -1,0 +1,12 @@
+Get-ChildItem .\ampl_nlp_source -Filter *.mod | ForEach-Object {
+    $nome = $_.BaseName
+    $run = ".\scripts\temp_$nome.run"
+
+@"
+reset;
+model ampl_nlp_source/$($nome).mod;
+write g ampl_nlp_source/$($nome);
+"@ | Set-Content $run
+
+    ampl $run
+}

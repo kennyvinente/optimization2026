@@ -1,0 +1,3 @@
+solver,instances,successes,success_rate_pct,median_time_s,mean_time_s,median_iterations,mean_iterations,objective_values
+Ipopt,97,44,45.36,41.525,310.022727,21.0,98.96,45
+MadNLP,22,21,95.45,16.22,18.795762,,,21

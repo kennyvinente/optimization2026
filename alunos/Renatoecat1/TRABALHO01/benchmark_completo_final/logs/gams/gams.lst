@@ -1,0 +1,216 @@
+GAMS 53.5.1  f2e5fac3 May 20, 2026          WEX-WEI x86 64bit/MS Windows - 06/14/26 21:50:10 Page 1
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+C o m p i l a t i o n
+
+
+   1  * NLP written by GAMS Convert at 06/14/26 20:27:30
+   2  *
+   3  * Equation counts
+   4  *     Total        E        G        L        N        X        C        B
+   5  *        11       11        0        0        0        0        0        0
+   6  *
+   7  * Variable counts
+   8  *                  x        b        i      s1s      s2s       sc       si
+   9  *     Total     cont   binary  integer     sos1     sos2    scont     sint
+  10  *        25       25        0        0        0        0        0        0
+  11  * FX      0
+  12  *
+  13  * Nonzero counts
+  14  *     Total    const       NL
+  15  *        81       21       60
+  16   
+  17  * Solve m using NLP minimizing x25;
+  18   
+  19  Variables
+  20      x1,x2,x3,x4,x5,x6,x7,x8,x9,x10,x11,x12,x13,x14,x15,x16,x17,x18,x19,x20,x21,
+  21      x22,x23,x24,x25;
+  22   
+  23  Equations
+  24      e1,e2,e3,e4,e5,e6,e7,e8,e9,e10,e11;
+  25   
+  26  e1..  -sqr(x1) - sqr(-0.9 + x2) - sqr(-1.8 + x3) - sqr(-2.6 + x4) - sqr(-3.3 +
+  27        x5) - sqr(-4.4 + x6) - sqr(-5.2 + x7) - sqr(-6.1 + x8) - sqr(-6.5 + x9)
+  28        - sqr(-7.4 + x10) - sqr(-5.9 + x14) - sqr(-5.4 + x15) - sqr(-4.4 + x16)
+  29        - sqr(-4.6 + x17) - sqr(-3.5 + x18) - sqr(-3.7 + x19) - sqr(-2.8 + x20)
+  30        - sqr(-2.8 + x21) - sqr(-2.4 + x22) - sqr(-1.5 + x23) + x25 =E= 0;
+  31  e2..  x10 * x11 + x12 * sqr(x10) + x13 * power(x10, 3) - x23 + x24 =E= 0;
+  32  e3..  x9 * x11 + x12 * sqr(x9) + x13 * power(x9, 3) - x22 + x24 =E= 0;
+  33  e4..  x8 * x11 + x12 * sqr(x8) + x13 * power(x8, 3) - x21 + x24 =E= 0;
+  34  e5..  x7 * x11 + x12 * sqr(x7) + x13 * power(x7, 3) - x20 + x24 =E= 0;
+  35  e6..  x6 * x11 + x12 * sqr(x6) + x13 * power(x6, 3) - x19 + x24 =E= 0;
+  36  e7..  x5 * x11 + x12 * sqr(x5) + x13 * power(x5, 3) - x18 + x24 =E= 0;
+  37  e8..  x4 * x11 + x12 * sqr(x4) + x13 * power(x4, 3) - x17 + x24 =E= 0;
+  38  e9..  x3 * x11 + x12 * sqr(x3) + x13 * power(x3, 3) - x16 + x24 =E= 0;
+  39  e10..  x2 * x11 + x12 * sqr(x2) + x13 * power(x2, 3) - x15 + x24 =E= 0;
+  40  e11..  x1 * x11 + x12 * sqr(x1) + x13 * power(x1, 3) - x14 + x24 =E= 0;
+  41   
+  42  * set non-default bounds
+  43  x1.lo = -0.5; x1.up = 0.5;
+  44  x2.lo = 0.4; x2.up = 1.4;
+  45  x3.lo = 1.3; x3.up = 2.3;
+  46  x4.lo = 2.1; x4.up = 3.1;
+  47  x5.lo = 2.8; x5.up = 3.8;
+  48  x6.lo = 3.9; x6.up = 4.9;
+  49  x7.lo = 4.7; x7.up = 5.7;
+  50  x8.lo = 5.6; x8.up = 6.6;
+  51  x9.lo = 6; x9.up = 7;
+  52  x10.lo = 6.9; x10.up = 7.9;
+  53  x11.lo = -2; x11.up = 2;
+  54  x12.lo = -2; x12.up = 2;
+  55  x13.lo = -2; x13.up = 2;
+  56  x14.lo = 5.4; x14.up = 6.4;
+  57  x15.lo = 4.9; x15.up = 5.9;
+  58  x16.lo = 3.9; x16.up = 4.9;
+  59  x17.lo = 4.1; x17.up = 5.1;
+  60  x18.lo = 3; x18.up = 4;
+  61  x19.lo = 3.2; x19.up = 4.2;
+  62  x20.lo = 2.3; x20.up = 3.3;
+  63  x21.lo = 2.3; x21.up = 3.3;
+  64  x22.lo = 1.9; x22.up = 2.9;
+  65  x23.lo = 1; x23.up = 2;
+  66  x24.lo = 0; x24.up = 10;
+  67   
+  68  Model m / all /;
+  69   
+  70  m.limrow = 0;
+  71  m.limcol = 0;
+  72  m.workspace = 32;
+  73   
+  74  Solve m using NLP minimizing x25;
+
+
+COMPILATION TIME     =        0.000 SECONDS      2 MB  53.5.1 f2e5fac3 WEX-WEI
+GAMS 53.5.1  f2e5fac3 May 20, 2026          WEX-WEI x86 64bit/MS Windows - 06/14/26 21:50:10 Page 2
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Range Statistics    SOLVE m Using NLP From line 74
+
+
+RANGE STATISTICS (ABSOLUTE NON-ZERO FINITE VALUES)
+
+RHS       [min, max] : [        NA,        NA] - Zero values observed as well
+Bound     [min, max] : [ 4.000E-01, 1.000E+01] - Zero values observed as well
+Matrix    [min, max] : [ 6.400E-02, 3.285E+02] - Zero values observed as well
+
+GAMS 53.5.1  f2e5fac3 May 20, 2026          WEX-WEI x86 64bit/MS Windows - 06/14/26 21:50:10 Page 3
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Model Statistics    SOLVE m Using NLP From line 74
+
+
+MODEL STATISTICS
+
+BLOCKS OF EQUATIONS          11     SINGLE EQUATIONS           11
+BLOCKS OF VARIABLES          25     SINGLE VARIABLES           25  19 projected
+NON ZERO ELEMENTS            81     NON LINEAR N-Z             60
+CODE LENGTH                 212     CONSTANT POOL              33
+
+
+GENERATION TIME      =        0.016 SECONDS      3 MB  53.5.1 f2e5fac3 WEX-WEI
+GAMS 53.5.1  f2e5fac3 May 20, 2026          WEX-WEI x86 64bit/MS Windows - 06/14/26 21:50:10 Page 4
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Solution Report     SOLVE m Using NLP From line 74
+
+
+               S O L V E      S U M M A R Y
+
+     MODEL   m                   OBJECTIVE  x25
+     TYPE    NLP                 DIRECTION  MINIMIZE
+     SOLVER  CONOPT              FROM LINE  74
+
+**** SOLVER STATUS     1 Normal Completion
+**** MODEL STATUS      2 Locally Optimal
+**** OBJECTIVE VALUE                0.4852
+
+ RESOURCE USAGE, LIMIT          3.594 10000000000.000
+ ITERATION COUNT, LIMIT        13    2147483647
+ EVALUATION ERRORS              0             0
+--- *** This solver runs with a demo license. No commercial use.
+ 
+ 
+    C O N O P T   version 4.39.0
+    Copyright (C) GAMS Software GmbH
+                  GAMS Development Corporation
+ 
+    Will use up to 4 threads.
+ 
+ 
+    The user model has 11 constraints and 25 variables
+    with 81 Jacobian elements, 60 of which are nonlinear.
+    The Hessian of the Lagrangian has 20 elements on the diagonal,
+    30 elements below the diagonal, and 23 nonlinear variables.
+ 
+    The post-triangular part of the model has 1 constraints and variables.
+ 
+    Preprocessed model has 10 constraints and 24 variables
+    with 60 Jacobian elements, 40 of which are nonlinear.
+ 
+ ** Optimal solution. Reduced gradient less than tolerance.
+ 
+ 
+ CONOPT time Total                            0.014 seconds
+   of which: Function evaluations             0.001 =  7.1%
+             1st Derivative evaluations       0.002 = 14.3%
+             2nd Derivative evaluations       0.000 =  0.0%
+             Directional 2nd Deriv(Hess)      0.000 =  0.0%
+             Interval derivative evals        0.001 =  7.1%
+ 
+
+                           LOWER          LEVEL          UPPER         MARGINAL
+
+---- EQU e1                  .              .              .             1.0000      
+---- EQU e2                  .              .              .            -0.1078      
+---- EQU e3                  .              .              .             0.1056      
+---- EQU e4                  .              .              .             0.3156      
+---- EQU e5                  .              .              .            -0.4444      
+---- EQU e6                  .              .              .             0.4408      
+---- EQU e7                  .              .              .            -0.6797      
+---- EQU e8                  .              .              .             0.6243      
+---- EQU e9                  .              .              .            -0.3514      
+---- EQU e10                 .              .              .             0.2139      
+---- EQU e11                 .              .              .            -0.1168      
+
+                           LOWER          LEVEL          UPPER         MARGINAL
+
+---- VAR x1                -0.5000         0.0574         0.5000         EPS         
+---- VAR x2                 0.4000         0.8169         1.4000         EPS         
+---- VAR x3                 1.3000         1.8991         2.3000         EPS         
+---- VAR x4                 2.1000         2.4466         3.1000         EPS         
+---- VAR x5                 2.8000         3.4430         3.8000         EPS         
+---- VAR x6                 3.9000         4.3067         4.9000         EPS         
+---- VAR x7                 4.7000         5.3113         5.7000         EPS         
+---- VAR x8                 5.6000         6.0051         6.6000         EPS         
+---- VAR x9                 6.0000         6.4637         7.0000         EPS         
+---- VAR x10                6.9000         7.4503         7.9000          .          
+---- VAR x11               -2.0000        -0.9998         2.0000         EPS         
+---- VAR x12               -2.0000         0.1525         2.0000         EPS         
+---- VAR x13               -2.0000        -0.0132         2.0000          .          
+---- VAR x14                5.4000         5.9584         6.4000          .          
+---- VAR x15                4.9000         5.2930         5.9000          .          
+---- VAR x16                3.9000         4.5757         4.9000          .          
+---- VAR x17                4.1000         4.2878         5.1000         EPS         
+---- VAR x18                3.0000         3.8399         4.0000          .          
+---- VAR x19                3.2000         3.4796         4.2000          .          
+---- VAR x20                2.3000         3.0222         3.3000          .          
+---- VAR x21                2.3000         2.6422         3.3000          .          
+---- VAR x22                1.9000         2.3472         2.9000   -7.59760E-10      
+---- VAR x23                1.0000         1.5539         2.0000         EPS         
+---- VAR x24                 .             6.0153        10.0000          .          
+---- VAR x25               -INF            0.4852        +INF             .          
+
+
+**** REPORT SUMMARY :        0     NONOPT
+                             0 INFEASIBLE
+                             0  UNBOUNDED
+                             0     ERRORS
+
+
+EXECUTION TIME       =        3.672 SECONDS      3 MB  53.5.1 f2e5fac3 WEX-WEI
+
+
+USER: GAMS Demo, for EULA and demo limitations see   G260130+0003Cc-GEN
+      https://www.gams.com/latest/docs/UG%5FLicense.html         DC0000
+
+
+**** FILE SUMMARY
+
+Input      C:\Users\edmil\Desktop\benchmark_nlp\coconut_gams\gams.gms
+Output     C:\Users\edmil\Desktop\benchmark_nlp\logs\gams\gams.lst

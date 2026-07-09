@@ -1,0 +1,221 @@
+GAMS 53.5.1  f2e5fac3 May 20, 2026          WEX-WEI x86 64bit/MS Windows - 06/14/26 21:50:15 Page 1
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+C o m p i l a t i o n
+
+
+   1  * GAMS-model house.dag.gms written by dag2gams Converter at 29/03/2004 13:50:04
+   2  * University of Vienna
+   4   Set i/1*8/;
+   5   Set j/1*8/;
+   6   Equations objcon
+   7  con1
+   8  con2
+   9  con3
+  10  con4
+  11  con5
+  12  con6
+  13  con7
+  14  con8
+  15  ;
+  16  Variables x(j), obj;
+  17  * Objective function (to be minimized)
+  18  objcon.. obj =e= -x('7') -
+  19  x('8');
+  20   
+  21   
+  22  con1.. (-0.5) * x('2') +
+  23  x('3') -
+  24  x('5') =e= 0;
+  25  con2.. -x('2') -
+  26  x('5') +
+  27  x('6') =e= 0;
+  28  con3..(-0.5) * x('2') +
+  29  x('5') =g= 0;
+  30  con4..x('1') -
+  31  0.5 * x('4') =l= 0;
+  32  con5..x('1') -
+  33  0.33333333333333298 * x('4') =g= 0;
+  34  con6.. x('7') -
+  35  x('1') * x('2') -
+  36  x('4') * x('5') =e= 0;
+  37  con7.. x('8') -
+  38  x('1') * x('3') =e= 0;
+  39  con8..x('2') * ((- x('1')) +
+  40  x('4')) =g= 1500;
+  41  x.lo('4')=40;
+  42  x.up('4')=68;
+  43  x.lo('6')=56;
+  44  x.up('6')=100;
+  45  x.up('7')=3000;
+  46  Model m/All/;
+  47  m.workspace = 32;
+  48  m.optfile = 1;options nlp=convert;
+  49  Solve m using nlp minimizing obj;
+  50  display x.l, obj.l;
+  51   
+  52   
+  53   
+
+
+COMPILATION TIME     =        0.000 SECONDS      3 MB  53.5.1 f2e5fac3 WEX-WEI
+GAMS 53.5.1  f2e5fac3 May 20, 2026          WEX-WEI x86 64bit/MS Windows - 06/14/26 21:50:15 Page 2
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Equation Listing    SOLVE m Using NLP From line 49
+
+
+---- objcon  =E=  
+
+objcon..  x(7) + x(8) + obj =E= 0 ; (LHS = 0)
+     
+
+---- con1  =E=  
+
+con1..  - 0.5*x(2) + x(3) - x(5) =E= 0 ; (LHS = 0)
+     
+
+---- con2  =E=  
+
+con2..  - x(2) - x(5) + x(6) =E= 0 ; (LHS = 56, INFES = 56 ****)
+     
+
+---- con3  =G=  
+
+con3..  - 0.5*x(2) + x(5) =G= 0 ; (LHS = 0)
+     
+
+---- con4  =L=  
+
+con4..  x(1) - 0.5*x(4) =L= 0 ; (LHS = -20)
+     
+
+---- con5  =G=  
+
+con5..  x(1) - 0.333333333333333*x(4) =G= 0 ; (LHS = -13.3333333333333, INFES = 13.3333333333333 ****)
+     
+
+---- con6  =E=  
+
+con6..  (0)*x(1) + (0)*x(2) + (0)*x(4) - (40)*x(5) + x(7) =E= 0 ; (LHS = 0)
+     
+
+---- con7  =E=  
+
+con7..  (0)*x(1) + (0)*x(3) + x(8) =E= 0 ; (LHS = 0)
+     
+
+---- con8  =G=  
+
+con8..  (0)*x(1) + (40)*x(2) + (0)*x(4) =G= 1500 ; (LHS = 0, INFES = 1500 ****)
+     
+GAMS 53.5.1  f2e5fac3 May 20, 2026          WEX-WEI x86 64bit/MS Windows - 06/14/26 21:50:15 Page 3
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Column Listing      SOLVE m Using NLP From line 49
+
+
+---- x  
+
+x(1)
+                (.LO, .L, .UP, .M = -INF, 0, +INF, 0)
+        1       con4
+        1       con5
+       (0)      con6
+       (0)      con7
+       (0)      con8
+
+x(2)
+                (.LO, .L, .UP, .M = -INF, 0, +INF, 0)
+       -0.5     con1
+       -1       con2
+       -0.5     con3
+       (0)      con6
+      (40)      con8
+
+x(3)
+                (.LO, .L, .UP, .M = -INF, 0, +INF, 0)
+        1       con1
+       (0)      con7
+
+REMAINING 5 ENTRIES SKIPPED
+
+---- obj  
+
+obj
+                (.LO, .L, .UP, .M = -INF, 0, +INF, 0)
+        1       objcon
+
+GAMS 53.5.1  f2e5fac3 May 20, 2026          WEX-WEI x86 64bit/MS Windows - 06/14/26 21:50:15 Page 4
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Range Statistics    SOLVE m Using NLP From line 49
+
+
+RANGE STATISTICS (ABSOLUTE NON-ZERO FINITE VALUES)
+
+RHS       [min, max] : [ 1.500E+03, 1.500E+03] - Zero values observed as well
+Bound     [min, max] : [ 4.000E+01, 3.000E+03]
+Matrix    [min, max] : [ 3.333E-01, 4.000E+01] - Zero values observed as well
+
+GAMS 53.5.1  f2e5fac3 May 20, 2026          WEX-WEI x86 64bit/MS Windows - 06/14/26 21:50:15 Page 5
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Model Statistics    SOLVE m Using NLP From line 49
+
+
+MODEL STATISTICS
+
+BLOCKS OF EQUATIONS           9     SINGLE EQUATIONS            9
+BLOCKS OF VARIABLES           2     SINGLE VARIABLES            9  2 projected
+NON ZERO ELEMENTS            26     NON LINEAR N-Z              9
+CODE LENGTH                  20     CONSTANT POOL              16
+
+
+GENERATION TIME      =        0.015 SECONDS      4 MB  53.5.1 f2e5fac3 WEX-WEI
+GAMS 53.5.1  f2e5fac3 May 20, 2026          WEX-WEI x86 64bit/MS Windows - 06/14/26 21:50:15 Page 6
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Solution Report     SOLVE m Using NLP From line 49
+
+
+               S O L V E      S U M M A R Y
+
+     MODEL   m                   OBJECTIVE  obj
+     TYPE    NLP                 DIRECTION  MINIMIZE
+     SOLVER  CONVERT             FROM LINE  49
+
+**** SOLVER STATUS     1 Normal Completion
+**** MODEL STATUS      14 No Solution Returned
+**** OBJECTIVE VALUE                0.0000
+
+ RESOURCE USAGE, LIMIT          0.000 10000000000.000
+ ITERATION COUNT, LIMIT         0    2147483647
+ EVALUATION ERRORS              0             0
+
+*** Error Cannot open parameter file "C:\Users\edmil\Desktop\benchmark_nlp\convert.opt"
+*** Error Error code = 2; No such file or directory
+
+--- Writing Dict      : dict.txt
+--- Writing Gams      : gams.gms
+
+
+No solution returned
+GAMS 53.5.1  f2e5fac3 May 20, 2026          WEX-WEI x86 64bit/MS Windows - 06/14/26 21:50:15 Page 7
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+E x e c u t i o n
+
+
+----     50 VARIABLE x.L  
+
+                      ( ALL       0.000 )
+
+
+----     50 VARIABLE obj.L                 =        0.000  
+
+
+EXECUTION TIME       =        0.078 SECONDS      4 MB  53.5.1 f2e5fac3 WEX-WEI
+
+
+USER: GAMS Demo, for EULA and demo limitations see   G260130+0003Cc-GEN
+      https://www.gams.com/latest/docs/UG%5FLicense.html         DC0000
+
+
+**** FILE SUMMARY
+
+Input      C:\Users\edmil\Desktop\benchmark_nlp\coconut_gams\house.gms
+Output     C:\Users\edmil\Desktop\benchmark_nlp\logs\gams\house.lst

@@ -1,0 +1,897 @@
+GAMS 53.5.1  f2e5fac3 May 20, 2026          WEX-WEI x86 64bit/MS Windows - 06/14/26 21:50:06 Page 1
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+C o m p i l a t i o n
+
+
+   1  * GAMS-model ex8_6_1.dag.gms written by dag2gams Converter at 29/03/2004 14:10:00
+   2  * University of Vienna
+   4   Set i/1*45/;
+   5   Set j/1*75/;
+   6   Equations objcon
+   7  con1
+   8  con2
+   9  con3
+  10  con4
+  11  con5
+  12  con6
+  13  con7
+  14  con8
+  15  con9
+  16  con10
+  17  con11
+  18  con12
+  19  con13
+  20  con14
+  21  con15
+  22  con16
+  23  con17
+  24  con18
+  25  con19
+  26  con20
+  27  con21
+  28  con22
+  29  con23
+  30  con24
+  31  con25
+  32  con26
+  33  con27
+  34  con28
+  35  con29
+  36  con30
+  37  con31
+  38  con32
+  39  con33
+  40  con34
+  41  con35
+  42  con36
+  43  con37
+  44  con38
+  45  con39
+  46  con40
+  47  con41
+  48  con42
+  49  con43
+  50  con44
+  51  con45
+  52  ;
+  53  Variables x(j), obj;
+  54  * Objective function (to be minimized)
+  55  objcon.. obj =e= (-2) * power(x('31'), 3) -
+  56  2 * power(x('32'), 3) -
+  57  2 * power(x('33'), 3) -
+  58  2 * power(x('34'), 3) -
+  59  2 * power(x('35'), 3) -
+  60  2 * power(x('36'), 3) -
+  61  2 * power(x('37'), 3) -
+  62  2 * power(x('38'), 3) -
+  63  2 * power(x('39'), 3) -
+  64  2 * power(x('40'), 3) -
+  65  2 * power(x('41'), 3) -
+  66  2 * power(x('42'), 3) -
+  67  2 * power(x('43'), 3) -
+  68  2 * power(x('44'), 3) -
+  69  2 * power(x('45'), 3) -
+  70  2 * power(x('46'), 3) -
+  71  2 * power(x('47'), 3) -
+  72  2 * power(x('48'), 3) -
+  73  2 * power(x('49'), 3) -
+  74  2 * power(x('50'), 3) -
+  75  2 * power(x('51'), 3) -
+  76  2 * power(x('52'), 3) -
+  77  2 * power(x('53'), 3) -
+  78  2 * power(x('54'), 3) -
+  79  2 * power(x('55'), 3) -
+  80  2 * power(x('56'), 3) -
+  81  2 * power(x('57'), 3) -
+  82  2 * power(x('58'), 3) -
+  83  2 * power(x('59'), 3) -
+  84  2 * power(x('60'), 3) -
+  85  2 * power(x('61'), 3) -
+  86  2 * power(x('62'), 3) -
+  87  2 * power(x('63'), 3) -
+  88  2 * power(x('64'), 3) -
+  89  2 * power(x('65'), 3) -
+  90  2 * power(x('66'), 3) -
+  91  2 * power(x('67'), 3) -
+  92  2 * power(x('68'), 3) -
+  93  2 * power(x('69'), 3) -
+  94  2 * power(x('70'), 3) -
+  95  2 * power(x('71'), 3) -
+  96  2 * power(x('72'), 3) -
+  97  2 * power(x('73'), 3) -
+  98  2 * power(x('74'), 3) -
+  99  2 * power(x('75'), 3) +
+ 100  power(x('31'), 6) +
+ 101  power(x('32'), 6) +
+ 102  power(x('33'), 6) +
+ 103  power(x('34'), 6) +
+ 104  power(x('35'), 6) +
+ 105  power(x('36'), 6) +
+ 106  power(x('37'), 6) +
+ 107  power(x('38'), 6) +
+ 108  power(x('39'), 6) +
+ 109  power(x('40'), 6) +
+ 110  power(x('41'), 6) +
+ 111  power(x('42'), 6) +
+ 112  power(x('43'), 6) +
+ 113  power(x('44'), 6) +
+ 114  power(x('45'), 6) +
+ 115  power(x('46'), 6) +
+ 116  power(x('47'), 6) +
+ 117  power(x('48'), 6) +
+ 118  power(x('49'), 6) +
+ 119  power(x('50'), 6) +
+ 120  power(x('51'), 6) +
+ 121  power(x('52'), 6) +
+ 122  power(x('53'), 6) +
+ 123  power(x('54'), 6) +
+ 124  power(x('55'), 6) +
+ 125  power(x('56'), 6) +
+ 126  power(x('57'), 6) +
+ 127  power(x('58'), 6) +
+ 128  power(x('59'), 6) +
+ 129  power(x('60'), 6) +
+ 130  power(x('61'), 6) +
+ 131  power(x('62'), 6) +
+ 132  power(x('63'), 6) +
+ 133  power(x('64'), 6) +
+ 134  power(x('65'), 6) +
+ 135  power(x('66'), 6) +
+ 136  power(x('67'), 6) +
+ 137  power(x('68'), 6) +
+ 138  power(x('69'), 6) +
+ 139  power(x('70'), 6) +
+ 140  power(x('71'), 6) +
+ 141  power(x('72'), 6) +
+ 142  power(x('73'), 6) +
+ 143  power(x('74'), 6) +
+ 144  power(x('75'), 6);
+ 145   
+ 146   
+ 147  con1.. -(1/(power(x('9') -
+ 148  x('10'), 2) +
+ 149  power(x('19') -
+ 150  x('20'), 2) +
+ 151  power(x('29') -
+ 152  x('30'), 2))) +
+ 153  x('75') =e= 0;
+ 154  con2.. -(1/(power(x('8') -
+ 155  x('10'), 2) +
+ 156  power(x('18') -
+ 157  x('20'), 2) +
+ 158  power(x('28') -
+ 159  x('30'), 2))) +
+ 160  x('74') =e= 0;
+ 161  con3.. -(1/(power(x('8') -
+ 162  x('9'), 2) +
+ 163  power(x('18') -
+ 164  x('19'), 2) +
+ 165  power(x('28') -
+ 166  x('29'), 2))) +
+ 167  x('73') =e= 0;
+ 168  con4.. -(1/(power(x('7') -
+ 169  x('10'), 2) +
+ 170  power(x('17') -
+ 171  x('20'), 2) +
+ 172  power(x('27') -
+ 173  x('30'), 2))) +
+ 174  x('72') =e= 0;
+ 175  con5.. -(1/(power(x('7') -
+ 176  x('9'), 2) +
+ 177  power(x('17') -
+ 178  x('19'), 2) +
+ 179  power(x('27') -
+ 180  x('29'), 2))) +
+ 181  x('71') =e= 0;
+ 182  con6.. -(1/(power(x('7') -
+ 183  x('8'), 2) +
+ 184  power(x('17') -
+ 185  x('18'), 2) +
+ 186  power(x('27') -
+ 187  x('28'), 2))) +
+ 188  x('70') =e= 0;
+ 189  con7.. -(1/(power(x('6') -
+ 190  x('10'), 2) +
+ 191  power(x('16') -
+ 192  x('20'), 2) +
+ 193  power(x('26') -
+ 194  x('30'), 2))) +
+ 195  x('69') =e= 0;
+ 196  con8.. -(1/(power(x('6') -
+ 197  x('9'), 2) +
+ 198  power(x('16') -
+ 199  x('19'), 2) +
+ 200  power(x('26') -
+ 201  x('29'), 2))) +
+ 202  x('68') =e= 0;
+ 203  con9.. -(1/(power(x('6') -
+ 204  x('8'), 2) +
+ 205  power(x('16') -
+ 206  x('18'), 2) +
+ 207  power(x('26') -
+ 208  x('28'), 2))) +
+ 209  x('67') =e= 0;
+ 210  con10.. -(1/(power(x('6') -
+ 211  x('7'), 2) +
+ 212  power(x('16') -
+ 213  x('17'), 2) +
+ 214  power(x('26') -
+ 215  x('27'), 2))) +
+ 216  x('66') =e= 0;
+ 217  con11.. -(1/(power(x('5') -
+ 218  x('10'), 2) +
+ 219  power(x('15') -
+ 220  x('20'), 2) +
+ 221  power(x('25') -
+ 222  x('30'), 2))) +
+ 223  x('65') =e= 0;
+ 224  con12.. -(1/(power(x('5') -
+ 225  x('9'), 2) +
+ 226  power(x('15') -
+ 227  x('19'), 2) +
+ 228  power(x('25') -
+ 229  x('29'), 2))) +
+ 230  x('64') =e= 0;
+ 231  con13.. -(1/(power(x('5') -
+ 232  x('8'), 2) +
+ 233  power(x('15') -
+ 234  x('18'), 2) +
+ 235  power(x('25') -
+ 236  x('28'), 2))) +
+ 237  x('63') =e= 0;
+ 238  con14.. -(1/(power(x('5') -
+ 239  x('7'), 2) +
+ 240  power(x('15') -
+ 241  x('17'), 2) +
+ 242  power(x('25') -
+ 243  x('27'), 2))) +
+ 244  x('62') =e= 0;
+ 245  con15.. -(1/(power(x('5') -
+ 246  x('6'), 2) +
+ 247  power(x('15') -
+ 248  x('16'), 2) +
+ 249  power(x('25') -
+ 250  x('26'), 2))) +
+ 251  x('61') =e= 0;
+ 252  con16.. -(1/(power(x('4') -
+ 253  x('10'), 2) +
+ 254  power(x('14') -
+ 255  x('20'), 2) +
+ 256  power(x('24') -
+ 257  x('30'), 2))) +
+ 258  x('60') =e= 0;
+ 259  con17.. -(1/(power(x('4') -
+ 260  x('9'), 2) +
+ 261  power(x('14') -
+ 262  x('19'), 2) +
+ 263  power(x('24') -
+ 264  x('29'), 2))) +
+ 265  x('59') =e= 0;
+ 266  con18.. -(1/(power(x('4') -
+ 267  x('8'), 2) +
+ 268  power(x('14') -
+ 269  x('18'), 2) +
+ 270  power(x('24') -
+ 271  x('28'), 2))) +
+ 272  x('58') =e= 0;
+ 273  con19.. -(1/(power(x('4') -
+ 274  x('7'), 2) +
+ 275  power(x('14') -
+ 276  x('17'), 2) +
+ 277  power(x('24') -
+ 278  x('27'), 2))) +
+ 279  x('57') =e= 0;
+ 280  con20.. -(1/(power(x('4') -
+ 281  x('6'), 2) +
+ 282  power(x('14') -
+ 283  x('16'), 2) +
+ 284  power(x('24') -
+ 285  x('26'), 2))) +
+ 286  x('56') =e= 0;
+ 287  con21.. -(1/(power(x('4') -
+ 288  x('5'), 2) +
+ 289  power(x('14') -
+ 290  x('15'), 2) +
+ 291  power(x('24') -
+ 292  x('25'), 2))) +
+ 293  x('55') =e= 0;
+ 294  con22.. -(1/(power(x('3') -
+ 295  x('10'), 2) +
+ 296  power(x('13') -
+ 297  x('20'), 2) +
+ 298  power(x('23') -
+ 299  x('30'), 2))) +
+ 300  x('54') =e= 0;
+ 301  con23.. -(1/(power(x('3') -
+ 302  x('9'), 2) +
+ 303  power(x('13') -
+ 304  x('19'), 2) +
+ 305  power(x('23') -
+ 306  x('29'), 2))) +
+ 307  x('53') =e= 0;
+ 308  con24.. -(1/(power(x('3') -
+ 309  x('8'), 2) +
+ 310  power(x('13') -
+ 311  x('18'), 2) +
+ 312  power(x('23') -
+ 313  x('28'), 2))) +
+ 314  x('52') =e= 0;
+ 315  con25.. -(1/(power(x('3') -
+ 316  x('7'), 2) +
+ 317  power(x('13') -
+ 318  x('17'), 2) +
+ 319  power(x('23') -
+ 320  x('27'), 2))) +
+ 321  x('51') =e= 0;
+ 322  con26.. -(1/(power(x('1') -
+ 323  x('2'), 2) +
+ 324  power(x('11') -
+ 325  x('12'), 2) +
+ 326  power(x('21') -
+ 327  x('22'), 2))) +
+ 328  x('31') =e= 0;
+ 329  con27.. -(1/(power(x('1') -
+ 330  x('3'), 2) +
+ 331  power(x('11') -
+ 332  x('13'), 2) +
+ 333  power(x('21') -
+ 334  x('23'), 2))) +
+ 335  x('32') =e= 0;
+ 336  con28.. -(1/(power(x('3') -
+ 337  x('6'), 2) +
+ 338  power(x('13') -
+ 339  x('16'), 2) +
+ 340  power(x('23') -
+ 341  x('26'), 2))) +
+ 342  x('50') =e= 0;
+ 343  con29.. -(1/(power(x('1') -
+ 344  x('4'), 2) +
+ 345  power(x('11') -
+ 346  x('14'), 2) +
+ 347  power(x('21') -
+ 348  x('24'), 2))) +
+ 349  x('33') =e= 0;
+ 350  con30.. -(1/(power(x('3') -
+ 351  x('5'), 2) +
+ 352  power(x('13') -
+ 353  x('15'), 2) +
+ 354  power(x('23') -
+ 355  x('25'), 2))) +
+ 356  x('49') =e= 0;
+ 357  con31.. -(1/(power(x('1') -
+ 358  x('5'), 2) +
+ 359  power(x('11') -
+ 360  x('15'), 2) +
+ 361  power(x('21') -
+ 362  x('25'), 2))) +
+ 363  x('34') =e= 0;
+ 364  con32.. -(1/(power(x('3') -
+ 365  x('4'), 2) +
+ 366  power(x('13') -
+ 367  x('14'), 2) +
+ 368  power(x('23') -
+ 369  x('24'), 2))) +
+ 370  x('48') =e= 0;
+ 371  con33.. -(1/(power(x('1') -
+ 372  x('6'), 2) +
+ 373  power(x('11') -
+ 374  x('16'), 2) +
+ 375  power(x('21') -
+ 376  x('26'), 2))) +
+ 377  x('35') =e= 0;
+ 378  con34.. -(1/(power(x('2') -
+ 379  x('10'), 2) +
+ 380  power(x('12') -
+ 381  x('20'), 2) +
+ 382  power(x('22') -
+ 383  x('30'), 2))) +
+ 384  x('47') =e= 0;
+ 385  con35.. -(1/(power(x('1') -
+ 386  x('7'), 2) +
+ 387  power(x('11') -
+ 388  x('17'), 2) +
+ 389  power(x('21') -
+ 390  x('27'), 2))) +
+ 391  x('36') =e= 0;
+ 392  con36.. -(1/(power(x('2') -
+ 393  x('9'), 2) +
+ 394  power(x('12') -
+ 395  x('19'), 2) +
+ 396  power(x('22') -
+ 397  x('29'), 2))) +
+ 398  x('46') =e= 0;
+ 399  con37.. -(1/(power(x('1') -
+ 400  x('8'), 2) +
+ 401  power(x('11') -
+ 402  x('18'), 2) +
+ 403  power(x('21') -
+ 404  x('28'), 2))) +
+ 405  x('37') =e= 0;
+ 406  con38.. -(1/(power(x('2') -
+ 407  x('8'), 2) +
+ 408  power(x('12') -
+ 409  x('18'), 2) +
+ 410  power(x('22') -
+ 411  x('28'), 2))) +
+ 412  x('45') =e= 0;
+ 413  con39.. -(1/(power(x('1') -
+ 414  x('9'), 2) +
+ 415  power(x('11') -
+ 416  x('19'), 2) +
+ 417  power(x('21') -
+ 418  x('29'), 2))) +
+ 419  x('38') =e= 0;
+ 420  con40.. -(1/(power(x('2') -
+ 421  x('7'), 2) +
+ 422  power(x('12') -
+ 423  x('17'), 2) +
+ 424  power(x('22') -
+ 425  x('27'), 2))) +
+ 426  x('44') =e= 0;
+ 427  con41.. -(1/(power(x('1') -
+ 428  x('10'), 2) +
+ 429  power(x('11') -
+ 430  x('20'), 2) +
+ 431  power(x('21') -
+ 432  x('30'), 2))) +
+ 433  x('39') =e= 0;
+ 434  con42.. -(1/(power(x('2') -
+ 435  x('6'), 2) +
+ 436  power(x('12') -
+ 437  x('16'), 2) +
+ 438  power(x('22') -
+ 439  x('26'), 2))) +
+ 440  x('43') =e= 0;
+ 441  con43.. -(1/(power(x('2') -
+ 442  x('3'), 2) +
+ 443  power(x('12') -
+ 444  x('13'), 2) +
+ 445  power(x('22') -
+ 446  x('23'), 2))) +
+ 447  x('40') =e= 0;
+ 448  con44.. -(1/(power(x('2') -
+ 449  x('4'), 2) +
+ 450  power(x('12') -
+ 451  x('14'), 2) +
+ 452  power(x('22') -
+ 453  x('24'), 2))) +
+ 454  x('41') =e= 0;
+ 455  con45.. -(1/(power(x('2') -
+ 456  x('5'), 2) +
+ 457  power(x('12') -
+ 458  x('15'), 2) +
+ 459  power(x('22') -
+ 460  x('25'), 2))) +
+ 461  x('42') =e= 0;
+ 462  x.lo('1')=0;
+ 463  x.up('1')=0;
+ 464  x.lo('11')=0;
+ 465  x.up('11')=0;
+ 466  x.lo('12')=0;
+ 467  x.up('12')=0;
+ 468  x.lo('21')=0;
+ 469  x.up('21')=0;
+ 470  x.lo('22')=0;
+ 471  x.up('22')=0;
+ 472  x.lo('23')=0;
+ 473  x.up('23')=0;
+ 474  x.lo('2')=-5;
+ 475  x.up('2')=5;
+ 476  x.lo('3')=-5;
+ 477  x.up('3')=5;
+ 478  x.lo('4')=-5;
+ 479  x.up('4')=5;
+ 480  x.lo('5')=-5;
+ 481  x.up('5')=5;
+ 482  x.lo('6')=-5;
+ 483  x.up('6')=5;
+ 484  x.lo('7')=-5;
+ 485  x.up('7')=5;
+ 486  x.lo('8')=-5;
+ 487  x.up('8')=5;
+ 488  x.lo('9')=-5;
+ 489  x.up('9')=5;
+ 490  x.lo('10')=-5;
+ 491  x.up('10')=5;
+ 492  x.lo('13')=-5;
+ 493  x.up('13')=5;
+ 494  x.lo('14')=-5;
+ 495  x.up('14')=5;
+ 496  x.lo('15')=-5;
+ 497  x.up('15')=5;
+ 498  x.lo('16')=-5;
+ 499  x.up('16')=5;
+ 500  x.lo('17')=-5;
+ 501  x.up('17')=5;
+ 502  x.lo('18')=-5;
+ 503  x.up('18')=5;
+ 504  x.lo('19')=-5;
+ 505  x.up('19')=5;
+ 506  x.lo('20')=-5;
+ 507  x.up('20')=5;
+ 508  x.lo('24')=-5;
+ 509  x.up('24')=5;
+ 510  x.lo('25')=-5;
+ 511  x.up('25')=5;
+ 512  x.lo('26')=-5;
+ 513  x.up('26')=5;
+ 514  x.lo('27')=-5;
+ 515  x.up('27')=5;
+ 516  x.lo('28')=-5;
+ 517  x.up('28')=5;
+ 518  x.lo('29')=-5;
+ 519  x.up('29')=5;
+ 520  x.lo('30')=-5;
+ 521  x.up('30')=5;
+ 522  Model m/All/;
+ 523  m.workspace = 32;
+ 524  m.optfile = 1;options nlp=convert;
+ 525  Solve m using nlp minimizing obj;
+ 526  display x.l, obj.l;
+ 527   
+ 528   
+ 529   
+
+
+COMPILATION TIME     =        0.000 SECONDS      3 MB  53.5.1 f2e5fac3 WEX-WEI
+GAMS 53.5.1  f2e5fac3 May 20, 2026          WEX-WEI x86 64bit/MS Windows - 06/14/26 21:50:06 Page 2
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Equation Listing    SOLVE m Using NLP From line 525
+
+
+---- objcon  =E=  
+
+objcon..  (0)*x(31) + (0)*x(32) + (0)*x(33) + (0)*x(34) + (0)*x(35) + (0)*x(36) + (0)*x(37) + (0)*x(38) + (0)*x(39) + (0)*x(40) + (0)*x(41) + (0)*x(42) + (0)*x(43) + (0)*x(44) + (0)*x(45) + (0)*x(46) + (0)*x(47) + (0)*x(48) + (0)*x(49) + (0)*x(50) + (0)*x(51) + (0)*x(52) + (0)*x(53) + (0)*x(54) + (0)*x(55) + (0)*x(56) + (0)*x(57) + (0)*x(58) + (0)*x(59) + (0)*x(60) + (0)*x(61) + (0)*x(62) + (0)*x(63) + (0)*x(64) + (0)*x(65) + (0)*x(66) + (0)*x(67) + (0)*x(68) + (0)*x(69) + (0)*x(70) + (0)*x(71) + (0)*x(72) + (0)*x(73) + (0)*x(74) + (0)*x(75) + obj =E= 0 ; (LHS = 0)
+     
+**** Exec Error at line 147: division by zero (0)
+
+---- con1  =E=  
+
+con1..  (0)*x(9) + (0)*x(10) + (0)*x(19) + (0)*x(20) + (0)*x(29) + (0)*x(30) + x(75) =E= 0 ; (LHS = UNDF)
+     
+**** Exec Error at line 154: division by zero (0)
+
+---- con2  =E=  
+
+con2..  (0)*x(8) + (0)*x(10) + (0)*x(18) + (0)*x(20) + (0)*x(28) + (0)*x(30) + x(74) =E= 0 ; (LHS = UNDF)
+     
+**** Exec Error at line 161: division by zero (0)
+
+---- con3  =E=  
+
+con3..  (0)*x(8) + (0)*x(9) + (0)*x(18) + (0)*x(19) + (0)*x(28) + (0)*x(29) + x(73) =E= 0 ; (LHS = UNDF)
+     
+**** Exec Error at line 168: division by zero (0)
+
+---- con4  =E=  
+
+con4..  (0)*x(7) + (0)*x(10) + (0)*x(17) + (0)*x(20) + (0)*x(27) + (0)*x(30) + x(72) =E= 0 ; (LHS = UNDF)
+     
+**** Exec Error at line 175: division by zero (0)
+
+---- con5  =E=  
+
+con5..  (0)*x(7) + (0)*x(9) + (0)*x(17) + (0)*x(19) + (0)*x(27) + (0)*x(29) + x(71) =E= 0 ; (LHS = UNDF)
+     
+**** Exec Error at line 182: division by zero (0)
+
+---- con6  =E=  
+
+con6..  (0)*x(7) + (0)*x(8) + (0)*x(17) + (0)*x(18) + (0)*x(27) + (0)*x(28) + x(70) =E= 0 ; (LHS = UNDF)
+     
+**** Exec Error at line 189: division by zero (0)
+
+---- con7  =E=  
+
+con7..  (0)*x(6) + (0)*x(10) + (0)*x(16) + (0)*x(20) + (0)*x(26) + (0)*x(30) + x(69) =E= 0 ; (LHS = UNDF)
+     
+**** Exec Error at line 196: division by zero (0)
+
+---- con8  =E=  
+
+con8..  (0)*x(6) + (0)*x(9) + (0)*x(16) + (0)*x(19) + (0)*x(26) + (0)*x(29) + x(68) =E= 0 ; (LHS = UNDF)
+     
+**** Exec Error at line 203: division by zero (0)
+
+---- con9  =E=  
+
+con9..  (0)*x(6) + (0)*x(8) + (0)*x(16) + (0)*x(18) + (0)*x(26) + (0)*x(28) + x(67) =E= 0 ; (LHS = UNDF)
+     
+**** Exec Error at line 210: division by zero (0)
+
+---- con10  =E=  
+
+con10..  (0)*x(6) + (0)*x(7) + (0)*x(16) + (0)*x(17) + (0)*x(26) + (0)*x(27) + x(66) =E= 0 ; (LHS = UNDF)
+     
+**** Exec Error at line 217: division by zero (0)
+
+---- con11  =E=  
+
+con11..  (0)*x(5) + (0)*x(10) + (0)*x(15) + (0)*x(20) + (0)*x(25) + (0)*x(30) + x(65) =E= 0 ; (LHS = UNDF)
+     
+**** Exec Error at line 224: division by zero (0)
+
+---- con12  =E=  
+
+con12..  (0)*x(5) + (0)*x(9) + (0)*x(15) + (0)*x(19) + (0)*x(25) + (0)*x(29) + x(64) =E= 0 ; (LHS = UNDF)
+     
+**** Exec Error at line 231: division by zero (0)
+
+---- con13  =E=  
+
+con13..  (0)*x(5) + (0)*x(8) + (0)*x(15) + (0)*x(18) + (0)*x(25) + (0)*x(28) + x(63) =E= 0 ; (LHS = UNDF)
+     
+**** Exec Error at line 238: division by zero (0)
+
+---- con14  =E=  
+
+con14..  (0)*x(5) + (0)*x(7) + (0)*x(15) + (0)*x(17) + (0)*x(25) + (0)*x(27) + x(62) =E= 0 ; (LHS = UNDF)
+     
+**** Exec Error at line 245: division by zero (0)
+
+---- con15  =E=  
+
+con15..  (0)*x(5) + (0)*x(6) + (0)*x(15) + (0)*x(16) + (0)*x(25) + (0)*x(26) + x(61) =E= 0 ; (LHS = UNDF)
+     
+**** Exec Error at line 252: division by zero (0)
+
+---- con16  =E=  
+
+con16..  (0)*x(4) + (0)*x(10) + (0)*x(14) + (0)*x(20) + (0)*x(24) + (0)*x(30) + x(60) =E= 0 ; (LHS = UNDF)
+     
+**** Exec Error at line 259: division by zero (0)
+
+---- con17  =E=  
+
+con17..  (0)*x(4) + (0)*x(9) + (0)*x(14) + (0)*x(19) + (0)*x(24) + (0)*x(29) + x(59) =E= 0 ; (LHS = UNDF)
+     
+**** Exec Error at line 266: division by zero (0)
+
+---- con18  =E=  
+
+con18..  (0)*x(4) + (0)*x(8) + (0)*x(14) + (0)*x(18) + (0)*x(24) + (0)*x(28) + x(58) =E= 0 ; (LHS = UNDF)
+     
+**** Exec Error at line 273: division by zero (0)
+
+---- con19  =E=  
+
+con19..  (0)*x(4) + (0)*x(7) + (0)*x(14) + (0)*x(17) + (0)*x(24) + (0)*x(27) + x(57) =E= 0 ; (LHS = UNDF)
+     
+**** Exec Error at line 280: division by zero (0)
+
+---- con20  =E=  
+
+con20..  (0)*x(4) + (0)*x(6) + (0)*x(14) + (0)*x(16) + (0)*x(24) + (0)*x(26) + x(56) =E= 0 ; (LHS = UNDF)
+     
+**** Exec Error at line 287: division by zero (0)
+
+---- con21  =E=  
+
+con21..  (0)*x(4) + (0)*x(5) + (0)*x(14) + (0)*x(15) + (0)*x(24) + (0)*x(25) + x(55) =E= 0 ; (LHS = UNDF)
+     
+**** Exec Error at line 294: division by zero (0)
+
+---- con22  =E=  
+
+con22..  (0)*x(3) + (0)*x(10) + (0)*x(13) + (0)*x(20) + (0)*x(23) + (0)*x(30) + x(54) =E= 0 ; (LHS = UNDF)
+     
+**** Exec Error at line 301: division by zero (0)
+
+---- con23  =E=  
+
+con23..  (0)*x(3) + (0)*x(9) + (0)*x(13) + (0)*x(19) + (0)*x(23) + (0)*x(29) + x(53) =E= 0 ; (LHS = UNDF)
+     
+**** Exec Error at line 308: division by zero (0)
+
+---- con24  =E=  
+
+con24..  (0)*x(3) + (0)*x(8) + (0)*x(13) + (0)*x(18) + (0)*x(23) + (0)*x(28) + x(52) =E= 0 ; (LHS = UNDF)
+     
+**** Exec Error at line 315: division by zero (0)
+
+---- con25  =E=  
+
+con25..  (0)*x(3) + (0)*x(7) + (0)*x(13) + (0)*x(17) + (0)*x(23) + (0)*x(27) + x(51) =E= 0 ; (LHS = UNDF)
+     
+**** Exec Error at line 322: division by zero (0)
+
+---- con26  =E=  
+
+con26..  (0)*x(1) + (0)*x(2) + (0)*x(11) + (0)*x(12) + (0)*x(21) + (0)*x(22) + x(31) =E= 0 ; (LHS = UNDF)
+     
+**** Exec Error at line 329: division by zero (0)
+
+---- con27  =E=  
+
+con27..  (0)*x(1) + (0)*x(3) + (0)*x(11) + (0)*x(13) + (0)*x(21) + (0)*x(23) + x(32) =E= 0 ; (LHS = UNDF)
+     
+**** Exec Error at line 336: division by zero (0)
+
+---- con28  =E=  
+
+con28..  (0)*x(3) + (0)*x(6) + (0)*x(13) + (0)*x(16) + (0)*x(23) + (0)*x(26) + x(50) =E= 0 ; (LHS = UNDF)
+     
+**** Exec Error at line 343: division by zero (0)
+
+---- con29  =E=  
+
+con29..  (0)*x(1) + (0)*x(4) + (0)*x(11) + (0)*x(14) + (0)*x(21) + (0)*x(24) + x(33) =E= 0 ; (LHS = UNDF)
+     
+**** Exec Error at line 350: division by zero (0)
+
+---- con30  =E=  
+
+con30..  (0)*x(3) + (0)*x(5) + (0)*x(13) + (0)*x(15) + (0)*x(23) + (0)*x(25) + x(49) =E= 0 ; (LHS = UNDF)
+     
+**** Exec Error at line 357: division by zero (0)
+
+---- con31  =E=  
+
+con31..  (0)*x(1) + (0)*x(5) + (0)*x(11) + (0)*x(15) + (0)*x(21) + (0)*x(25) + x(34) =E= 0 ; (LHS = UNDF)
+     
+**** Exec Error at line 364: division by zero (0)
+
+---- con32  =E=  
+
+con32..  (0)*x(3) + (0)*x(4) + (0)*x(13) + (0)*x(14) + (0)*x(23) + (0)*x(24) + x(48) =E= 0 ; (LHS = UNDF)
+     
+**** Exec Error at line 371: division by zero (0)
+
+---- con33  =E=  
+
+con33..  (0)*x(1) + (0)*x(6) + (0)*x(11) + (0)*x(16) + (0)*x(21) + (0)*x(26) + x(35) =E= 0 ; (LHS = UNDF)
+     
+**** Exec Error at line 378: division by zero (0)
+
+---- con34  =E=  
+
+con34..  (0)*x(2) + (0)*x(10) + (0)*x(12) + (0)*x(20) + (0)*x(22) + (0)*x(30) + x(47) =E= 0 ; (LHS = UNDF)
+     
+**** Exec Error at line 385: division by zero (0)
+
+---- con35  =E=  
+
+con35..  (0)*x(1) + (0)*x(7) + (0)*x(11) + (0)*x(17) + (0)*x(21) + (0)*x(27) + x(36) =E= 0 ; (LHS = UNDF)
+     
+**** Exec Error at line 392: division by zero (0)
+
+---- con36  =E=  
+
+con36..  (0)*x(2) + (0)*x(9) + (0)*x(12) + (0)*x(19) + (0)*x(22) + (0)*x(29) + x(46) =E= 0 ; (LHS = UNDF)
+     
+**** Exec Error at line 399: division by zero (0)
+
+---- con37  =E=  
+
+con37..  (0)*x(1) + (0)*x(8) + (0)*x(11) + (0)*x(18) + (0)*x(21) + (0)*x(28) + x(37) =E= 0 ; (LHS = UNDF)
+     
+**** Exec Error at line 406: division by zero (0)
+
+---- con38  =E=  
+
+con38..  (0)*x(2) + (0)*x(8) + (0)*x(12) + (0)*x(18) + (0)*x(22) + (0)*x(28) + x(45) =E= 0 ; (LHS = UNDF)
+     
+**** Exec Error at line 413: division by zero (0)
+
+---- con39  =E=  
+
+con39..  (0)*x(1) + (0)*x(9) + (0)*x(11) + (0)*x(19) + (0)*x(21) + (0)*x(29) + x(38) =E= 0 ; (LHS = UNDF)
+     
+**** Exec Error at line 420: division by zero (0)
+
+---- con40  =E=  
+
+con40..  (0)*x(2) + (0)*x(7) + (0)*x(12) + (0)*x(17) + (0)*x(22) + (0)*x(27) + x(44) =E= 0 ; (LHS = UNDF)
+     
+**** Exec Error at line 427: division by zero (0)
+
+---- con41  =E=  
+
+con41..  (0)*x(1) + (0)*x(10) + (0)*x(11) + (0)*x(20) + (0)*x(21) + (0)*x(30) + x(39) =E= 0 ; (LHS = UNDF)
+     
+**** Exec Error at line 434: division by zero (0)
+
+---- con42  =E=  
+
+con42..  (0)*x(2) + (0)*x(6) + (0)*x(12) + (0)*x(16) + (0)*x(22) + (0)*x(26) + x(43) =E= 0 ; (LHS = UNDF)
+     
+**** Exec Error at line 441: division by zero (0)
+
+---- con43  =E=  
+
+con43..  (0)*x(2) + (0)*x(3) + (0)*x(12) + (0)*x(13) + (0)*x(22) + (0)*x(23) + x(40) =E= 0 ; (LHS = UNDF)
+     
+**** Exec Error at line 448: division by zero (0)
+
+---- con44  =E=  
+
+con44..  (0)*x(2) + (0)*x(4) + (0)*x(12) + (0)*x(14) + (0)*x(22) + (0)*x(24) + x(41) =E= 0 ; (LHS = UNDF)
+     
+**** Exec Error at line 455: division by zero (0)
+
+---- con45  =E=  
+
+con45..  (0)*x(2) + (0)*x(5) + (0)*x(12) + (0)*x(15) + (0)*x(22) + (0)*x(25) + x(42) =E= 0 ; (LHS = UNDF)
+     
+GAMS 53.5.1  f2e5fac3 May 20, 2026          WEX-WEI x86 64bit/MS Windows - 06/14/26 21:50:06 Page 3
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Column Listing      SOLVE m Using NLP From line 525
+
+
+---- x  
+
+x(1)
+                (.LO, .L, .UP, .M = 0, 0, 0, 0)
+       (0)      con26
+       (0)      con27
+       (0)      con29
+       (0)      con31
+       (0)      con33
+       (0)      con35
+       (0)      con37
+       (0)      con39
+       (0)      con41
+
+x(2)
+                (.LO, .L, .UP, .M = -5, 0, 5, 0)
+       (0)      con26
+       (0)      con34
+       (0)      con36
+       (0)      con38
+       (0)      con40
+       (0)      con42
+       (0)      con43
+       (0)      con44
+       (0)      con45
+
+x(3)
+                (.LO, .L, .UP, .M = -5, 0, 5, 0)
+       (0)      con22
+       (0)      con23
+       (0)      con24
+       (0)      con25
+       (0)      con27
+       (0)      con28
+       (0)      con30
+       (0)      con32
+       (0)      con43
+
+REMAINING 72 ENTRIES SKIPPED
+
+---- obj  
+
+obj
+                (.LO, .L, .UP, .M = -INF, 0, +INF, 0)
+        1       objcon
+
+GAMS 53.5.1  f2e5fac3 May 20, 2026          WEX-WEI x86 64bit/MS Windows - 06/14/26 21:50:06 Page 4
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Model Statistics    SOLVE m Using NLP From line 525
+
+
+MODEL STATISTICS
+
+BLOCKS OF EQUATIONS          46     SINGLE EQUATIONS           46
+BLOCKS OF VARIABLES           2     SINGLE VARIABLES           76
+NON ZERO ELEMENTS           361     NON LINEAR N-Z              0
+CODE LENGTH               1,127     CONSTANT POOL              18
+
+
+GENERATION TIME      =        0.000 SECONDS      4 MB  53.5.1 f2e5fac3 WEX-WEI
+
+**** SOLVE from line 525 ABORTED, EXECERROR = 45
+
+
+EXECUTION TIME       =        0.000 SECONDS      4 MB  53.5.1 f2e5fac3 WEX-WEI
+
+
+USER: GAMS Demo, for EULA and demo limitations see   G260130+0003Cc-GEN
+      https://www.gams.com/latest/docs/UG%5FLicense.html         DC0000
+
+
+**** FILE SUMMARY
+
+Input      C:\Users\edmil\Desktop\benchmark_nlp\coconut_gams\ex8_6_1.gms
+Output     C:\Users\edmil\Desktop\benchmark_nlp\logs\gams\ex8_6_1.lst
+
+**** USER ERROR(S) ENCOUNTERED
