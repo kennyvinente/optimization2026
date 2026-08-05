@@ -1,16 +1,12 @@
-## Submissão via Pull Request
+# Ajay Ramchandani
+**Aluno Especial:** 
 
-Cada aluno deve:
+## AULA01 - Tópico 1
 
-1. Fazer um fork deste repositório
-2. Criar sua pasta em:
-   alunos/<seu_username>/
+### Arquivos entregues:
+- `atividade_01.ipynb` 
 
-3. Organizar por aula:
-   alunos/<seu_username>/AULAXX/
-
-4. Submeter via Pull Request
-
-### Exemplo:
-
-alunos/joaosilva/AULA01/atividade.ipynb
+### Resultado:
+- **Status:** OPTIMAL
+- **Z* (Score máximo):** 18.825
+-
